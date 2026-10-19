@@ -62,6 +62,8 @@ export function ContactPropertyAction({
 }: ContactPropertyActionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const mailtoHref = `mailto:${email}?subject=${subject}`;
+  const phoneHref = `tel:${phone.replace(/\D/g, "")}`;
+  const whatsappHref = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hello, I am interested in this property. Reference: ${listingSlug}`)}`;
 
   const trackLead = (channel: "email" | "phone" | "whatsapp") => {
     const sessionId = window.localStorage.getItem("homelinq_session_id");
@@ -164,9 +166,29 @@ export function ContactPropertyAction({
             </div>
 
             <div className="mt-5 grid gap-3">
-              <div className="min-h-20 rounded-xl bg-[var(--theme-spring)] px-4 py-3 text-[var(--theme-ink)]">
+              <div className="hidden min-h-20 rounded-xl bg-[var(--theme-spring)] px-4 py-3 text-[var(--theme-ink)] sm:block">
                 <p className="text-sm font-black">Call or WhatsApp</p>
                 <p className="mt-1 text-xl font-black tracking-wide">{phone}</p>
+              </div>
+              <div className="grid gap-3 sm:hidden">
+                <a
+                  className="flex min-h-14 items-center justify-between rounded-xl bg-[var(--theme-spring)] px-4 text-sm font-black text-[var(--theme-ink)] transition hover:bg-[#dfe8f3]"
+                  href={phoneHref}
+                  onClick={() => trackLead("phone")}
+                >
+                  <span>Call</span>
+                  <span className="text-base">{phone}</span>
+                </a>
+                <a
+                  className="flex min-h-14 items-center justify-between rounded-xl bg-[var(--theme-spring)] px-4 text-sm font-black text-[var(--theme-ink)] transition hover:bg-[#dfe8f3]"
+                  href={whatsappHref}
+                  onClick={() => trackLead("whatsapp")}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span>WhatsApp</span>
+                  <span className="text-base">{phone}</span>
+                </a>
               </div>
               <a
                 className="flex h-14 items-center gap-3 rounded-xl bg-[var(--theme-spring)] px-4 text-sm font-black text-[var(--theme-ink)] transition hover:bg-[#dfe8f3]"

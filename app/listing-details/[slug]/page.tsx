@@ -74,7 +74,7 @@ async function ListingDetailsContent({
           <h1 className="text-2xl font-black uppercase leading-tight text-[var(--theme-ink)] md:text-3xl">
             {listing.title} at {listing.location}
           </h1>
-          <p className="w-full shrink-0 text-2xl font-black text-[#1f56a3] md:w-auto">
+          <p className="w-full shrink-0 text-2xl font-black text-[var(--theme-primary)] md:w-auto">
             {listing.price}
             <span className="text-sm font-medium">{priceSuffix}</span>
           </p>

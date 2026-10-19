@@ -131,7 +131,7 @@ export function HeroCarousel({ children, slides }: HeroCarouselProps) {
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,22,38,0.96)_0%,rgba(8,22,38,0.74)_34%,rgba(8,22,38,0.34)_72%,rgba(8,22,38,0.62)_100%)]"
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-black/55 md:hidden" />
+      <div aria-hidden="true" className="absolute inset-0 bg-black/30 md:hidden" />
 
       {children}
     </section>
