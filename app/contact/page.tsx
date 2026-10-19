@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact HomeLinq Properties",
+  description:
+    "Contact HomeLinq Properties in Accra, Ghana about homes, offices, commercial spaces, land, and property services.",
+  alternates: { canonical: "/contact" },
+};
 
 const contactEmail = "info@homelinqproperties.com";
 const contactPhone = "+233 54 100 0010";

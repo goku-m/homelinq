@@ -18,6 +18,10 @@ const currencies = ["GHC", "USD"];
 const minPrices = ["No min", "1,000", "2,500", "5,000", "10,000", "100,000"];
 const maxPrices = ["No max", "5,000", "10,000", "25,000", "100,000", "750,000"];
 
+function optionLabel(option: string) {
+  return option.replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
 function SearchIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg
@@ -107,16 +111,16 @@ function SelectField({
       <span className="sr-only">{label}</span>
       <span className="relative block">
         <select
-          className="h-14 w-full appearance-none rounded-xl border border-slate-200 bg-[var(--theme-surface)] px-4 pr-11 text-sm font-semibold text-[var(--theme-ink)] outline-none transition focus:border-[var(--theme-primary)] focus:bg-white focus:ring-4 focus:ring-[var(--theme-primary)]/15"
+          className="h-14 w-full appearance-none rounded-xl border border-slate-200 bg-[var(--theme-surface)] px-4 pr-11 font-[var(--font-poppins)] text-sm font-semibold text-[var(--theme-ink)] outline-none transition focus:border-[var(--theme-primary)] focus:bg-white focus:ring-4 focus:ring-[var(--theme-primary)]/15"
           defaultValue=""
           name={name}
         >
           <option disabled value="">
-            {label}
+            {optionLabel(label)}
           </option>
           {options.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {optionLabel(option)}
             </option>
           ))}
         </select>
@@ -197,7 +201,7 @@ export function QuickSearchModal({ variant }: QuickSearchModalProps) {
       {isOpen ? (
         <div
           aria-modal="true"
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--theme-ink)]/80 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[2147483647] flex items-center justify-center bg-[var(--theme-ink)]/80 px-4 py-6 backdrop-blur-sm"
           role="dialog"
         >
           <button
@@ -209,7 +213,7 @@ export function QuickSearchModal({ variant }: QuickSearchModalProps) {
 
           <form
             action="/explore"
-            className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white p-5 shadow-[0_30px_80px_rgba(0,0,0,0.32)] ring-1 ring-white/50 sm:p-6"
+            className="relative z-10 w-full max-w-md overflow-hidden rounded-3xl bg-white p-5 font-[var(--font-poppins)] shadow-[0_30px_80px_rgba(0,0,0,0.32)] ring-1 ring-white/50 sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -241,7 +245,7 @@ export function QuickSearchModal({ variant }: QuickSearchModalProps) {
               <SelectField label="Category" name="category" options={categories} />
 
               <div className="grid grid-cols-2 gap-4">
-                <SelectField label="Houses" name="type" options={propertyTypes} />
+                <SelectField label="Type" name="type" options={propertyTypes} />
                 <SelectField label="Beds" name="beds" options={bedOptions} />
                 <SelectField label="Currency" name="currency" options={currencies} />
                 <SelectField label="Min Price" name="minPrice" options={minPrices} />

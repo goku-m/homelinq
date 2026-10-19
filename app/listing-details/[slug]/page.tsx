@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/site-header";
+import type { Metadata } from "next";
 import { getListingBySlugFromDb, listListings } from "@/lib/listing-repository";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -33,6 +34,32 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: PageProps<"/listing-details/[slug]">["params"];
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const listing = await getListingBySlugFromDb(slug);
+
+  if (!listing) {
+    return { title: "Property not found" };
+  }
+
+  const description = `${listing.title} in ${listing.location}. ${listing.price}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
+  return {
+    title: `${listing.title} in ${listing.location}`,
+    description,
+    alternates: { canonical: `/listing-details/${listing.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${listing.title} in ${listing.location}`,
+      description,
+      images: [{ url: listing.image, alt: `${listing.title} property image` }],
+    },
+  };
+}
+
 function ListingDetailsFallback() {
   return (
     <main className="min-h-screen bg-[var(--theme-surface)] text-slate-950">
@@ -63,9 +90,35 @@ async function ListingDetailsContent({
   const contactSubject = encodeURIComponent(`Inquiry about ${listing.title}`);
   const contactEmail = "info@homelinqproperties.com";
   const contactPhone = "+233 54 100 0010";
+  const listingSchema = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: listing.title,
+    description: listing.details,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com"}/listing-details/${listing.slug}`,
+    image: [listing.image, ...listing.gallery],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: listing.location,
+      addressCountry: "GH",
+    },
+    offers: {
+      "@type": "Offer",
+      price: listing.price.replace(/[^\d.]/g, ""),
+      priceCurrency: listing.price.toUpperCase().includes("USD") ? "USD" : "GHS",
+      availability:
+        listing.availability === "available"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+    },
+  };
 
   return (
     <main className="min-h-screen bg-[var(--theme-surface)] text-slate-950">
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(listingSchema) }}
+        type="application/ld+json"
+      />
       <ListingViewTracker listingSlug={listing.slug} />
       <SiteHeader />
 

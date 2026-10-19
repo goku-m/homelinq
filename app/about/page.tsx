@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About HomeLinq Properties",
+  description:
+    "Learn how HomeLinq Properties helps people discover homes and commercial property opportunities in Ghana.",
+  alternates: { canonical: "/about" },
+};
 
 export default function AboutPage() {
   return (

@@ -92,7 +92,7 @@ export function HeroCarousel({ children, slides }: HeroCarouselProps) {
 
   return (
     <section
-      className="relative isolate h-auto min-h-[400px] touch-pan-y overflow-hidden bg-[#102139] text-white md:min-h-[460px]"
+      className="relative h-auto min-h-[400px] touch-pan-y overflow-hidden bg-[#102139] text-white md:min-h-[460px]"
       onClickCapture={(event) => {
         if (suppressClick.current) {
           event.preventDefault();

@@ -4,6 +4,14 @@ import { QuickSearchModal } from "@/components/quick-search-modal";
 import { SiteHeader } from "@/components/site-header";
 import { searchListings } from "@/lib/listing-repository";
 import type { ListingCategory, ListingType } from "@/types/listing";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Explore Properties for Sale, Rent, and Lease in Ghana",
+  description:
+    "Browse verified HomeLinq properties including houses, apartments, offices, shops, and land across Ghana.",
+  alternates: { canonical: "/explore" },
+};
 
 type ExploreSearchParams = Promise<Record<string, string | string[] | undefined>>;
 

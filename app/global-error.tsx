@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function GlobalError({
   error,
@@ -9,6 +10,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -24,7 +27,10 @@ export default function GlobalError({
           </p>
           <button
             className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-[var(--theme-primary)] px-5 text-sm font-black text-white transition hover:bg-[var(--theme-primary-hover)]"
-            onClick={() => reset()}
+            onClick={() => {
+              reset();
+              router.refresh();
+            }}
             type="button"
           >
             Try again

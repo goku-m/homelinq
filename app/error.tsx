@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 
 export default function Error({
@@ -11,6 +12,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -27,7 +30,10 @@ export default function Error({
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <button
             className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--theme-primary)] px-5 text-sm font-black text-white transition hover:bg-[var(--theme-primary-hover)]"
-            onClick={() => reset()}
+            onClick={() => {
+              reset();
+              router.refresh();
+            }}
             type="button"
           >
             Try again

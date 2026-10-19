@@ -15,8 +15,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HomeLinq | Commercial Property Search",
-  description: "Find premium office and retail commercial property listings.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com"),
+  title: {
+    default: "HomeLinq Properties | Homes and Properties in Ghana",
+    template: "%s | HomeLinq Properties",
+  },
+  description:
+    "Discover homes, apartments, offices, shops, land, and commercial properties for sale, rent, and lease in Ghana.",
+  keywords: [
+    "properties in Ghana",
+    "houses for sale in Accra",
+    "houses for rent in Ghana",
+    "commercial properties in Accra",
+    "HomeLinq Properties",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_GH",
+    siteName: "HomeLinq Properties",
+    title: "HomeLinq Properties | Homes and Properties in Ghana",
+    description:
+      "Find homes, commercial spaces, offices, shops, and land across Ghana.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HomeLinq Properties | Homes and Properties in Ghana",
+    description:
+      "Find homes, commercial spaces, offices, shops, and land across Ghana.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,6 +54,24 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${poppins.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "RealEstateAgent",
+              name: "HomeLinq Properties",
+              url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com",
+              telephone: "+233 54 100 0010",
+              email: "info@homelinqproperties.com",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Accra",
+                addressCountry: "GH",
+              },
+            }),
+          }}
+          type="application/ld+json"
+        />
         {children}
         <SiteFooter />
       </body>
