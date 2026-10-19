@@ -98,7 +98,6 @@ export default async function Home() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <QuickSearchModal variant="icon" />
             <MobileMenu items={navItems} />
           </div>
         </header>

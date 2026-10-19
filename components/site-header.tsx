@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { MobileMenu, type NavItem } from "./mobile-menu";
-import { QuickSearchModal } from "./quick-search-modal";
 
 const navItems: NavItem[] = [
   { href: "/explore?category=Sale", label: "For Sale" },
@@ -50,7 +49,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <QuickSearchModal variant="icon" />
           <MobileMenu items={navItems} />
         </div>
       </div>

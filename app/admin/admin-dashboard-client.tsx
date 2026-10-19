@@ -138,6 +138,13 @@ function AdminSidebarNav({
           {label}
         </button>
       ))}
+      <Link
+        className="mt-4 flex items-center gap-3 rounded-lg border-t border-white/10 px-3 py-4 text-white/78 transition hover:bg-white/8 hover:text-white"
+        href="/"
+      >
+        <Icon name="home" />
+        Back to Home
+      </Link>
     </nav>
   );
 }
