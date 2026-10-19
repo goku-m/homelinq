@@ -16,18 +16,22 @@ const navItems: NavItem[] = [
 const heroSlides: HeroSlide[] = [
   {
     src: "/homepage/commercial-hero.png?v=5",
+    mobileSrc: "/homepage/hero-mobile.png?v=1",
     alt: "Premium commercial towers in a downtown business district",
   },
   {
     src: "/homepage/commercial-hero-3.png?v=5",
+    mobileSrc: "/homepage/hero-mobile-2.png?v=1",
     alt: "Glass office towers around a landscaped commercial plaza",
   },
   {
     src: "/homepage/commercial-hero-2.png?v=5",
+    mobileSrc: "/homepage/hero-mobile-3.png?v=1",
     alt: "Mixed-use commercial boulevard with offices and retail podiums",
   },
   {
     src: "/homepage/commercial-hero-4.png?v=5",
+    mobileSrc: "/homepage/hero-mobile-4.png?v=1",
     alt: "Contemporary property exterior in a landscaped setting",
   },
 ];

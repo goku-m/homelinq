@@ -10,6 +10,7 @@ import {
 } from "react";
 
 export type HeroSlide = {
+  mobileSrc?: string;
   src: string;
   alt: string;
 };
@@ -114,14 +115,35 @@ export function HeroCarousel({ children, slides }: HeroCarouselProps) {
         >
           {slides.map((slide, index) => (
             <div className="relative h-full w-full shrink-0" key={slide.src}>
-              <Image
-                alt={slide.alt}
-                className="object-cover"
-                fill
-                priority={index === 0}
-                sizes="100vw"
-                src={slide.src}
-              />
+              {slide.mobileSrc ? (
+                <>
+                  <Image
+                    alt={slide.alt}
+                    className="hidden object-cover md:block"
+                    fill
+                    priority={index === 0}
+                    sizes="100vw"
+                    src={slide.src}
+                  />
+                  <Image
+                    alt={slide.alt}
+                    className="object-cover md:hidden"
+                    fill
+                    priority={index === 0}
+                    sizes="100vw"
+                    src={slide.mobileSrc}
+                  />
+                </>
+              ) : (
+                <Image
+                  alt={slide.alt}
+                  className="object-cover"
+                  fill
+                  priority={index === 0}
+                  sizes="100vw"
+                  src={slide.src}
+                />
+              )}
             </div>
           ))}
         </div>

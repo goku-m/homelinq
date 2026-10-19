@@ -14,8 +14,8 @@ import type { Listing, ListingAvailability, ListingType } from "@/types/listing"
 const typeColors = ["#622347", "#122e34", "#677e8a", "#e0b4b2", "#abafb5"];
 
 function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
+  return new Intl.NumberFormat("en-GH", {
+    currency: "GHS",
     maximumFractionDigits: value >= 1_000_000 ? 1 : 0,
     notation: value >= 1_000_000 ? "compact" : "standard",
     style: "currency",

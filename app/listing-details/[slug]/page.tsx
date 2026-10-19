@@ -74,7 +74,7 @@ async function ListingDetailsContent({
           <h1 className="text-2xl font-black uppercase leading-tight text-[var(--theme-ink)] md:text-3xl">
             {listing.title} at {listing.location}
           </h1>
-          <p className="w-full shrink-0 text-2xl font-black text-[var(--theme-primary)] md:w-auto">
+          <p className="w-full shrink-0 rounded-lg bg-[var(--theme-spring)] px-4 py-2 text-2xl font-black text-[#622347] md:w-auto">
             {listing.price}
             <span className="text-sm font-medium">{priceSuffix}</span>
           </p>
@@ -112,16 +112,22 @@ async function ListingDetailsContent({
           <DetailRow
             label={leaseOptionsLabel}
             value={
-              <div className="grid gap-2 sm:grid-cols-2">
-                {listing.leaseOptions.map((option, index) => (
-                  <span
-                    className="rounded-md bg-[var(--theme-surface)] px-3 py-2 text-[var(--theme-ink)]"
-                    key={`${option}-${index}`}
-                  >
-                    {option}
-                  </span>
-                ))}
-              </div>
+              listing.listingType === "Sale" ? (
+                <span className="rounded-md bg-[var(--theme-surface)] px-3 py-2 font-black text-[var(--theme-primary)]">
+                  {listing.price}
+                </span>
+              ) : (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {listing.leaseOptions.map((option, index) => (
+                    <span
+                      className="rounded-md bg-[var(--theme-surface)] px-3 py-2 text-[var(--theme-ink)]"
+                      key={`${option}-${index}`}
+                    >
+                      {option}
+                    </span>
+                  ))}
+                </div>
+              )
             }
           />
           <DetailRow label="Commission" value={listing.commission} />
