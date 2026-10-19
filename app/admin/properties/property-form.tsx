@@ -337,7 +337,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="title">Title</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="title"
               onChange={(event) => updateTitle(event.target.value)}
               required
@@ -347,7 +347,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="listingType">Listing type</FieldLabel>
             <select
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="listingType"
               onChange={(event) =>
                 updateForm("listingType", event.target.value as ListingType)
@@ -362,7 +362,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="category">Category</FieldLabel>
             <select
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="category"
               onChange={(event) =>
                 updateForm("category", event.target.value as ListingCategory)
@@ -381,7 +381,7 @@ export function PropertyForm({
             <div className="grid grid-cols-[104px_1fr]">
               <select
                 aria-label="Price currency"
-                className="h-11 rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-sm font-black text-slate-700 outline-none focus:border-blue-500"
+                className="h-11 rounded-l-lg border border-r-0 border-[var(--theme-border)] bg-slate-50 px-3 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
                 onChange={(event) =>
                   updateForm(
                     "currency",
@@ -398,7 +398,7 @@ export function PropertyForm({
                   {currencySymbols[form.currency]}
                 </span>
                 <input
-                  className="h-11 w-full rounded-r-lg border border-slate-300 pl-14 pr-3 text-sm outline-none focus:border-blue-500"
+                  className="h-11 w-full rounded-r-lg border border-[var(--theme-border)] pl-14 pr-3 text-sm outline-none focus:border-[var(--theme-primary)]"
                   id="price"
                   onChange={(event) => updateForm("price", event.target.value)}
                   placeholder="4,800"
@@ -411,7 +411,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="location">Location</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="location"
               onChange={(event) => updateForm("location", event.target.value)}
               required
@@ -421,7 +421,7 @@ export function PropertyForm({
           <div className="md:col-span-2">
             <FieldLabel htmlFor="details">Details</FieldLabel>
             <textarea
-              className="min-h-32 w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500"
+              className="min-h-32 w-full rounded-lg border border-[var(--theme-border)] px-3 py-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="details"
               onChange={(event) => updateForm("details", event.target.value)}
               required
@@ -437,7 +437,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="availability">Availability</FieldLabel>
             <select
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="availability"
               onChange={(event) =>
                 updateForm(
@@ -454,7 +454,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="bedrooms">Bedrooms</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="bedrooms"
               min="0"
               onChange={(event) => updateForm("bedrooms", event.target.value)}
@@ -465,7 +465,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="showers">Bathrooms</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="showers"
               min="0"
               onChange={(event) => updateForm("showers", event.target.value)}
@@ -476,7 +476,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="garage">Garage</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="garage"
               min="0"
               onChange={(event) => updateForm("garage", event.target.value)}
@@ -487,7 +487,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="furnished">Furnished</FieldLabel>
             <select
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="furnished"
               onChange={(event) => updateForm("furnished", event.target.value)}
               required
@@ -499,7 +499,7 @@ export function PropertyForm({
               <option value="Unfurnished">Unfurnished</option>
             </select>
           </div>
-          <label className="flex h-11 items-center gap-3 self-end rounded-lg border border-slate-300 px-3 text-sm font-semibold text-slate-700">
+          <label className="flex h-11 items-center gap-3 self-end rounded-lg border border-[var(--theme-border)] px-3 text-sm font-semibold text-slate-700">
             <input
               checked={form.featured}
               className="h-4 w-4"
@@ -517,7 +517,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="commission">Commission</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="commission"
               onChange={(event) => updateForm("commission", event.target.value)}
               placeholder="10.0%"
@@ -528,7 +528,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="registrationFee">Registration fee</FieldLabel>
             <input
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm outline-none focus:border-blue-500"
+              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="registrationFee"
               onChange={(event) =>
                 updateForm("registrationFee", event.target.value)
@@ -566,7 +566,7 @@ export function PropertyForm({
               <button
                 className={`rounded-full px-3 py-2 text-sm font-normal transition ${isSelected
                     ? "bg-[var(--theme-primary)] text-white"
-                    : "bg-[var(--theme-spring)] text-[#183866] hover:bg-blue-100"
+                    : "bg-[var(--theme-spring)] text-[var(--theme-deep-teal)] hover:bg-[var(--theme-silver)]/30"
                   }`}
                 key={amenity}
                 onClick={() => toggleAmenity(amenity)}
@@ -577,7 +577,7 @@ export function PropertyForm({
             );
           })}
         </div>
-        <div className="mt-5 rounded-lg border border-slate-300 bg-slate-50 p-4">
+        <div className="mt-5 rounded-lg border border-[var(--theme-border)] bg-slate-50 p-4">
           <p className="text-xs font-black uppercase tracking-normal text-slate-500">
             Selected amenities
           </p>
@@ -585,7 +585,7 @@ export function PropertyForm({
             {form.amenities.length > 0 ? (
               form.amenities.map((amenity) => (
                 <button
-                  className="rounded-full bg-white px-3 py-2 text-sm font-normal text-[#183866] shadow-sm ring-1 ring-slate-300"
+                  className="rounded-full bg-white px-3 py-2 text-sm font-normal text-[var(--theme-deep-teal)] shadow-sm ring-1 ring-slate-300"
                   key={amenity}
                   onClick={() => toggleAmenity(amenity)}
                   type="button"
@@ -608,7 +608,7 @@ export function PropertyForm({
           <div>
             <FieldLabel htmlFor="leaseOptions">Lease options</FieldLabel>
             <textarea
-              className="min-h-24 w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500"
+              className="min-h-24 w-full rounded-lg border border-[var(--theme-border)] px-3 py-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="leaseOptions"
               onChange={(event) =>
                 updateForm("leaseOptions", event.target.value)
@@ -626,15 +626,15 @@ export function PropertyForm({
         </p>
       ) : null}
 
-      <div className="sticky bottom-0 flex justify-end gap-3 border-t border-slate-300 bg-[#eef2f7]/95 py-4 backdrop-blur">
+      <div className="sticky bottom-0 flex justify-end gap-3 border-t border-[var(--theme-border)] bg-[var(--theme-surface)]/95 py-4 backdrop-blur">
         <Link
-          className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-black text-slate-700 hover:bg-slate-50"
+          className="inline-flex h-11 items-center justify-center rounded-lg border border-[var(--theme-border)] bg-white px-5 text-sm font-black text-slate-700 hover:bg-slate-50"
           href={cancelHref}
         >
           Cancel
         </Link>
         <button
-          className="inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-black text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--theme-primary)] px-6 text-sm font-black text-white hover:bg-[var(--theme-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60"
           disabled={isSaving || isUploadingImages || form.image === ""}
           type="submit"
         >

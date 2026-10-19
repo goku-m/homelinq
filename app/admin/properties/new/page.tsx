@@ -3,11 +3,11 @@ import { AddPropertyForm } from "./add-property-form";
 
 export default function NewPropertyPage() {
   return (
-    <main className="min-h-screen bg-[#eef2f7] px-4 py-6 text-slate-950 sm:px-6">
+    <main className="min-h-screen bg-[var(--theme-surface)] px-4 py-6 text-slate-950 sm:px-6">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-blue-700">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--theme-primary)]">
               Admin
             </p>
             <h1 className="text-2xl font-black tracking-normal text-slate-950">

@@ -134,8 +134,8 @@ function annualizedValue(listing: Pick<AdminListingRow, "listing_type" | "price"
 }
 
 function compactCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
+  return new Intl.NumberFormat("en-GH", {
+    currency: "GHS",
     maximumFractionDigits: value >= 1_000_000 ? 1 : 0,
     notation: value >= 1_000_000 ? "compact" : "standard",
     style: "currency",

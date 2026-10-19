@@ -152,10 +152,10 @@ function MetricCard({ metric }: { metric: AdminMetric }) {
   const toneClass = "bg-[var(--theme-muted-teal)]/10 text-[var(--theme-muted-teal)]";
 
   return (
-    <article className="flex min-h-24 items-center justify-between rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <div>
+    <article className="flex min-h-24 min-w-0 items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+      <div className="min-w-0">
         <p className="text-sm font-medium text-slate-500">{metric.label}</p>
-        <p className="mt-1 text-2xl font-black tracking-normal text-slate-950">
+        <p className="mt-1 break-words text-xl font-black tracking-normal text-slate-950 sm:text-2xl">
           {metric.value}
         </p>
       </div>
@@ -224,7 +224,7 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1fr_0.98fr]">
-        <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <article className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-base font-black text-slate-950">Portfolio Value by Location</h2>
             <span className="text-xs font-bold text-slate-400">Live</span>
@@ -234,7 +234,7 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
               <div key={item.label}>
                 <div className="mb-2 flex items-center justify-between gap-3 text-sm">
                   <span className="min-w-0 truncate font-medium text-slate-600">{item.label}</span>
-                  <span className="shrink-0 font-black text-slate-950">{formatCurrency(item.value)}</span>
+                  <span className="shrink-0 text-right text-xs font-black text-slate-950 sm:text-sm">{formatCurrency(item.value)}</span>
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-slate-100">
                   <div
@@ -247,7 +247,7 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
           </div>
         </article>
 
-        <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <article className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-base font-black text-slate-950">Listing Type Breakdown</h2>
           <div className="mt-6">
             <DonutChart data={dashboard.typeBreakdown} />
@@ -263,14 +263,14 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
           </p>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="w-full table-fixed text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-normal text-slate-500">
               <tr>
                 <th className="px-5 py-3 font-black">Property</th>
-                <th className="px-5 py-3 font-black">Type</th>
-                <th className="px-5 py-3 font-black">Status</th>
+                <th className="hidden px-5 py-3 font-black sm:table-cell">Type</th>
+                <th className="hidden px-5 py-3 font-black sm:table-cell">Status</th>
                 <th className="px-5 py-3 font-black">Price</th>
-                <th className="px-5 py-3 font-black">Updated</th>
+                <th className="hidden px-5 py-3 font-black md:table-cell">Updated</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -282,14 +282,14 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
                     </Link>
                     <p className="mt-1 text-xs font-medium text-slate-500">{listing.location}</p>
                   </td>
-                  <td className="px-5 py-4 font-semibold text-slate-700">{listing.type}</td>
-                  <td className="px-5 py-4">
+                  <td className="hidden px-5 py-4 font-semibold text-slate-700 sm:table-cell">{listing.type}</td>
+                  <td className="hidden px-5 py-4 sm:table-cell">
                     <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-black ${listing.availability === "available" ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
                       {listing.availability}
                     </span>
                   </td>
-                  <td className="px-5 py-4 font-black text-slate-950">{listing.price}</td>
-                  <td className="px-5 py-4 font-semibold text-slate-500">{formatTime(listing.updatedAt)}</td>
+                  <td className="max-w-0 break-words px-5 py-4 font-black text-slate-950">{listing.price}</td>
+                  <td className="hidden px-5 py-4 font-semibold text-slate-500 md:table-cell">{formatTime(listing.updatedAt)}</td>
                 </tr>
               ))}
             </tbody>
