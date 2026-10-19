@@ -2,8 +2,22 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: ["192.168.43.50"],
   experimental: {
     agentFeedback: true,
+  },
+  images: {
+    localPatterns: [
+      {
+        pathname: "/homepage/**",
+      },
+    ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
   },
   cacheComponents: true,
   partialPrefetching: true,

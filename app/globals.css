@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f7fb;
+  --foreground: var(--theme-ink);
+
+  /* Mindazzle palette saved for future theme work. */
+  --theme-rose-mist: #e0b4b2;
+  --theme-silver: #abafb5;
+  --theme-slate: #677e8a;
+  --theme-muted-teal: #622347;
+  --theme-deep-teal: #122e34;
+  --theme-ink: #0e1d21;
+  --theme-primary: #622347;
+  --theme-primary-hover: #122e34;
+  --theme-surface: #f5f7fb;
+  --theme-border: #abafb5;
+  --theme-spring: #edf2f8;
+  --theme-turquoise: #677e8a;
+  --theme-coral: #622347;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-theme-rose-mist: var(--theme-rose-mist);
+  --color-theme-silver: var(--theme-silver);
+  --color-theme-slate: var(--theme-slate);
+  --color-theme-muted-teal: var(--theme-muted-teal);
+  --color-theme-deep-teal: var(--theme-deep-teal);
+  --color-theme-ink: var(--theme-ink);
+  --color-theme-primary: var(--theme-primary);
+  --color-theme-primary-hover: var(--theme-primary-hover);
+  --color-theme-surface: var(--theme-surface);
+  --color-theme-border: var(--theme-border);
+  --color-theme-spring: var(--theme-spring);
+  --color-theme-turquoise: var(--theme-turquoise);
+  --color-theme-coral: var(--theme-coral);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
