@@ -486,8 +486,9 @@ function PanoramaViewer({
               alt={`${title} 360 view of ${selectedPanorama.label}`}
               url={selectedPanorama.url}
             />
-            <span className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-slate-950/70 px-4 py-2 text-xs font-black text-white backdrop-blur">
-              Drag or swipe to explore {selectedPanorama.label}
+            <span className="absolute bottom-6 left-1/2 z-20 w-max max-w-[calc(100%-2rem)] -translate-x-1/2 rounded-full bg-slate-950/70 px-2.5 py-1.5 text-center text-[10px] font-black text-white backdrop-blur sm:px-4 sm:py-2 sm:text-sm">
+              <span className="block">Drag or swipe to explore {selectedPanorama.label}</span>
+              <span className="mt-0.5 block sm:hidden">Rotate your phone for a better experience</span>
             </span>
           </div>
 
