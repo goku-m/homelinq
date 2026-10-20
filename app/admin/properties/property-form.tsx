@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { type FormEvent, useMemo, useState } from "react";
 import { ListingImageUploader } from "@/components/listing-image-uploader";
-import type { Listing, ListingAvailability, ListingCategory, ListingType } from "@/types/listing";
+import type { Listing, ListingAvailability, ListingCategory, ListingPriceRange, ListingType } from "@/types/listing";
 
 const amenityOptions = [
   "Air conditioning",
@@ -21,6 +21,7 @@ const amenityOptions = [
   "Water reservoir",
   "Secure parking",
   "City views",
+  "Swimming Pool",
 ];
 const categoryOptions: { label: string; value: ListingCategory }[] = [
   { label: "House", value: "house" },
@@ -47,6 +48,8 @@ type ListingFormState = {
   listingType: ListingType;
   location: string;
   price: string;
+  priceRange: ListingPriceRange;
+  registrationCurrency: "GHC" | "USD";
   registrationFee: string;
   showers: string;
   slug: string;
@@ -76,6 +79,8 @@ const emptyForm: ListingFormState = {
   listingType: "Rent",
   location: "",
   price: "",
+  priceRange: "Per month",
+  registrationCurrency: "GHC",
   registrationFee: "",
   showers: "0",
   slug: "",
@@ -151,6 +156,36 @@ function parsePrice(value: string): Pick<ListingFormState, "currency" | "price">
   };
 }
 
+function parseRegistrationFee(value: string): Pick<ListingFormState, "registrationCurrency" | "registrationFee"> {
+  const trimmedValue = value.trim();
+
+  if (/^(GHC|GHS)\s+/i.test(trimmedValue) || /^GHâ‚µ\s*/i.test(trimmedValue) || trimmedValue.startsWith("â‚µ")) {
+    return {
+      registrationCurrency: "GHC",
+      registrationFee: trimmedValue.replace(/^(GHC|GHS)\s+/i, "").replace(/^GHâ‚µ\s*/i, "").replace(/^â‚µ\s*/, ""),
+    };
+  }
+
+  return {
+    registrationCurrency: "USD",
+    registrationFee: trimmedValue.replace(/^USD\s+/i, "").replace(/^\$\s*/, ""),
+  };
+}
+
+function normalizeCommission(value: string) {
+  const trimmedValue = value.trim();
+
+  if (trimmedValue === "10.0%") {
+    return "10%";
+  }
+
+  if (trimmedValue === "5.0%") {
+    return "5%";
+  }
+
+  return trimmedValue;
+}
+
 const currencySymbols: Record<ListingFormState["currency"], string> = {
   GHC: "GH₵",
   USD: "$",
@@ -166,15 +201,26 @@ function formatPrice(currency: ListingFormState["currency"], price: string) {
   return `${currencySymbols[currency]} ${trimmedPrice}`;
 }
 
+function formatRegistrationFee(currency: ListingFormState["registrationCurrency"], fee: string) {
+  const trimmedFee = fee.trim();
+
+  if (trimmedFee === "") {
+    return "";
+  }
+
+  return `${currencySymbols[currency]} ${trimmedFee}`;
+}
+
 function listingToForm(listing: Listing): ListingFormState {
   const parsedPrice = parsePrice(listing.price);
+  const parsedRegistrationFee = parseRegistrationFee(listing.registrationFee);
 
   return {
     category: listing.category,
     amenities: listing.amenities,
     availability: listing.availability,
     bedrooms: String(listing.bedrooms),
-    commission: listing.commission,
+    commission: normalizeCommission(listing.commission),
     currency: parsedPrice.currency,
     details: listing.details,
     featured: Boolean(listing.featured),
@@ -186,7 +232,9 @@ function listingToForm(listing: Listing): ListingFormState {
     listingType: listing.listingType,
     location: listing.location,
     price: parsedPrice.price,
-    registrationFee: listing.registrationFee,
+    priceRange: listing.priceRange,
+    registrationCurrency: parsedRegistrationFee.registrationCurrency,
+    registrationFee: parsedRegistrationFee.registrationFee,
     showers: String(listing.showers),
     slug: listing.slug,
     title: listing.title,
@@ -218,6 +266,7 @@ export function PropertyForm({
   const [error, setError] = useState("");
   const [isUploadingImages, setIsUploadingImages] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [customAmenity, setCustomAmenity] = useState("");
 
   const selectedAmenitySet = useMemo(
     () => new Set(form.amenities),
@@ -253,6 +302,20 @@ export function PropertyForm({
     }));
   };
 
+  const addCustomAmenity = () => {
+    const amenity = customAmenity.trim();
+
+    if (!amenity || form.amenities.includes(amenity)) {
+      return;
+    }
+
+    setForm((current) => ({
+      ...current,
+      amenities: [...current.amenities, amenity],
+    }));
+    setCustomAmenity("");
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -285,8 +348,9 @@ export function PropertyForm({
       listingType: form.listingType,
       location: form.location.trim(),
       price: formatPrice(form.currency, form.price),
+      priceRange: form.priceRange,
       priceType: form.listingType,
-      registrationFee: form.registrationFee.trim(),
+      registrationFee: formatRegistrationFee(form.registrationCurrency, form.registrationFee),
       showers: numberFromString(form.showers),
       slug: form.slug.trim() || slugFromTitle(form.title),
       title: form.title.trim(),
@@ -378,7 +442,7 @@ export function PropertyForm({
           </div>
           <div>
             <FieldLabel htmlFor="price">Price</FieldLabel>
-            <div className="grid grid-cols-[104px_1fr]">
+            <div className={`grid ${form.listingType === "Sale" ? "grid-cols-[104px_1fr]" : "grid-cols-[104px_1fr_128px]"}`}>
               <select
                 aria-label="Price currency"
                 className="h-11 rounded-l-lg border border-r-0 border-[var(--theme-border)] bg-slate-50 px-3 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
@@ -406,6 +470,18 @@ export function PropertyForm({
                   value={form.price}
                 />
               </div>
+              {form.listingType !== "Sale" ? (
+                <select
+                  aria-label="Price range"
+                  className="h-11 rounded-r-lg border border-l-0 border-[var(--theme-border)] bg-slate-50 px-2 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
+                  onChange={(event) => updateForm("priceRange", event.target.value as ListingPriceRange)}
+                  value={form.priceRange}
+                >
+                  <option value="Per Day">Per Day</option>
+                  <option value="Per week">Per week</option>
+                  <option value="Per month">Per month</option>
+                </select>
+              ) : null}
             </div>
           </div>
           <div>
@@ -516,27 +592,45 @@ export function PropertyForm({
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           <div>
             <FieldLabel htmlFor="commission">Commission</FieldLabel>
-            <input
+            <select
               className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
               id="commission"
               onChange={(event) => updateForm("commission", event.target.value)}
-              placeholder="10.0%"
               required
               value={form.commission}
-            />
+            >
+              <option value="">Select commission</option>
+              <option value="1 Month">1 Month</option>
+              <option value="5%">5%</option>
+              <option value="10%">10%</option>
+            </select>
           </div>
           <div>
             <FieldLabel htmlFor="registrationFee">Registration fee</FieldLabel>
-            <input
-              className="h-11 w-full rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
-              id="registrationFee"
-              onChange={(event) =>
-                updateForm("registrationFee", event.target.value)
-              }
-              placeholder="$300"
-              required
-              value={form.registrationFee}
-            />
+            <div className="grid grid-cols-[104px_1fr]">
+              <select
+                aria-label="Registration fee currency"
+                className="h-11 rounded-l-lg border border-r-0 border-[var(--theme-border)] bg-slate-50 px-3 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
+                onChange={(event) => updateForm("registrationCurrency", event.target.value as ListingFormState["registrationCurrency"])}
+                value={form.registrationCurrency}
+              >
+                <option value="GHC">GHC</option>
+                <option value="USD">USD</option>
+              </select>
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-black text-slate-700">
+                  {currencySymbols[form.registrationCurrency]}
+                </span>
+                <input
+                  className="h-11 w-full rounded-r-lg border border-[var(--theme-border)] pl-14 pr-3 text-sm outline-none focus:border-[var(--theme-primary)]"
+                  id="registrationFee"
+                  onChange={(event) => updateForm("registrationFee", event.target.value)}
+                  placeholder="300"
+                  required
+                  value={form.registrationFee}
+                />
+              </div>
+            </div>
           </div>
           <div className="md:col-span-2">
             <ListingImageUploader
@@ -599,6 +693,28 @@ export function PropertyForm({
               </span>
             )}
           </div>
+        </div>
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+          <input
+            aria-label="Custom amenity"
+            className="h-11 flex-1 rounded-lg border border-[var(--theme-border)] px-3 text-sm outline-none focus:border-[var(--theme-primary)]"
+            onChange={(event) => setCustomAmenity(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                addCustomAmenity();
+              }
+            }}
+            placeholder="Type another amenity"
+            value={customAmenity}
+          />
+          <button
+            className="h-11 rounded-lg border border-[var(--theme-primary)] px-4 text-sm font-black text-[var(--theme-primary)] hover:bg-[var(--theme-spring)]"
+            onClick={addCustomAmenity}
+            type="button"
+          >
+            Add amenity
+          </button>
         </div>
       </section>
 

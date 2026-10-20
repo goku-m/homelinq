@@ -1,6 +1,7 @@
 export type ListingAvailability = "available" | "not available";
 
 export type ListingType = "Rent" | "Sale" | "Lease";
+export type ListingPriceRange = "Per Day" | "Per week" | "Per month";
 export type ListingCategory = "house" | "apartment" | "office" | "shop" | "land";
 
 export type Listing = {
@@ -20,6 +21,7 @@ export type Listing = {
     leaseOptions: string[];
     location: string;
     price: string;
+    priceRange: ListingPriceRange;
     priceType: ListingType;
     registrationFee: string;
     showers: number;

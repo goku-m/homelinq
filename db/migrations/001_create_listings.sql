@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS listings (
   listing_type text NOT NULL CHECK (listing_type IN ('Rent', 'Sale', 'Lease')),
   price_type text NOT NULL CHECK (price_type IN ('Rent', 'Sale', 'Lease')),
   price text NOT NULL,
+  price_range text NOT NULL DEFAULT 'Per month' CHECK (price_range IN ('Per Day', 'Per week', 'Per month')),
   location text NOT NULL,
   details text NOT NULL,
   availability text NOT NULL CHECK (availability IN ('available', 'not available')),

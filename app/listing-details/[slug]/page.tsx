@@ -85,7 +85,9 @@ async function ListingDetailsContent({
     notFound();
   }
 
-  const priceSuffix = listing.priceType === "Rent" ? "/ month" : "";
+  const priceSuffix = listing.listingType === "Rent" || listing.listingType === "Lease"
+    ? ` / ${listing.priceRange.replace("Per ", "").toLowerCase()}`
+    : "";
   const leaseOptionsLabel = listing.listingType === "Sale" ? "Price" : "Lease options";
   const contactSubject = encodeURIComponent(`Inquiry about ${listing.title}`);
   const contactEmail = "info@homelinqproperties.com";

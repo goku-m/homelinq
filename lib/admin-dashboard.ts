@@ -19,6 +19,7 @@ type AdminListingRow = {
   listing_type: ListingType;
   location: string;
   price: string;
+  price_range: Listing["priceRange"];
   price_type: ListingType;
   registration_fee?: string;
   showers?: number;
@@ -109,6 +110,7 @@ function listingFromRow(row: Required<AdminListingRow>): Listing {
     listingType: row.listing_type,
     location: row.location,
     price: row.price,
+    priceRange: row.price_range,
     priceType: row.price_type,
     registrationFee: row.registration_fee,
     showers: row.showers,
@@ -183,6 +185,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       listing_type,
       price_type,
       price,
+      price_range,
       location,
       availability,
       featured,
@@ -278,6 +281,7 @@ export async function getAdminListings() {
       listing_type,
       price_type,
       price,
+      price_range,
       location,
       details,
       availability,

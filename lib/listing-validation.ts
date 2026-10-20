@@ -1,6 +1,7 @@
-import type { Listing, ListingAvailability, ListingCategory, ListingType } from "@/types/listing";
+import type { Listing, ListingAvailability, ListingCategory, ListingPriceRange, ListingType } from "@/types/listing";
 
 const listingTypes: ListingType[] = ["Rent", "Sale", "Lease"];
+const listingPriceRanges: ListingPriceRange[] = ["Per Day", "Per week", "Per month"];
 const availabilityTypes: ListingAvailability[] = ["available", "not available"];
 const listingCategories: ListingCategory[] = ["house", "apartment", "office", "shop", "land"];
 
@@ -40,6 +41,14 @@ function listingTypeValue(value: unknown, field: string) {
   return value as ListingType;
 }
 
+function listingPriceRangeValue(value: unknown) {
+  if (!listingPriceRanges.includes(value as ListingPriceRange)) {
+    throw new Error("priceRange must be Per Day, Per week, or Per month");
+  }
+
+  return value as ListingPriceRange;
+}
+
 function availabilityValue(value: unknown) {
   if (!availabilityTypes.includes(value as ListingAvailability)) {
     throw new Error("availability must be available or not available");
@@ -77,6 +86,7 @@ export function parseListingInput(body: unknown): Listing {
     leaseOptions: stringArray(body.leaseOptions, "leaseOptions"),
     location: stringValue(body.location, "location"),
     price: stringValue(body.price, "price"),
+    priceRange: listingPriceRangeValue(body.priceRange),
     priceType: listingTypeValue(body.priceType, "priceType"),
     registrationFee: stringValue(body.registrationFee, "registrationFee"),
     showers: numberValue(body.showers, "showers"),
@@ -107,6 +117,7 @@ export function parseListingPatch(body: unknown): Partial<Listing> {
   if (body.leaseOptions !== undefined) patch.leaseOptions = stringArray(body.leaseOptions, "leaseOptions");
   if (body.location !== undefined) patch.location = stringValue(body.location, "location");
   if (body.price !== undefined) patch.price = stringValue(body.price, "price");
+  if (body.priceRange !== undefined) patch.priceRange = listingPriceRangeValue(body.priceRange);
   if (body.priceType !== undefined) patch.priceType = listingTypeValue(body.priceType, "priceType");
   if (body.registrationFee !== undefined) patch.registrationFee = stringValue(body.registrationFee, "registrationFee");
   if (body.showers !== undefined) patch.showers = numberValue(body.showers, "showers");
