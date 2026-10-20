@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { type FormEvent, useMemo, useState } from "react";
 import { ListingImageUploader } from "@/components/listing-image-uploader";
-import type { Listing, ListingAvailability, ListingCategory, ListingPriceRange, ListingType } from "@/types/listing";
+import { Listing360Uploader } from "@/components/listing-360-uploader";
+import type { Listing, ListingAvailability, ListingCategory, ListingPanorama, ListingPriceRange, ListingType } from "@/types/listing";
 
 const amenityOptions = [
   "Air conditioning",
@@ -49,6 +50,7 @@ type ListingFormState = {
   location: string;
   price: string;
   priceRange: ListingPriceRange;
+  panoramas: ListingPanorama[];
   registrationCurrency: "GHC" | "USD";
   registrationFee: string;
   showers: string;
@@ -80,6 +82,7 @@ const emptyForm: ListingFormState = {
   location: "",
   price: "",
   priceRange: "Per month",
+  panoramas: [],
   registrationCurrency: "GHC",
   registrationFee: "",
   showers: "0",
@@ -233,6 +236,7 @@ function listingToForm(listing: Listing): ListingFormState {
     location: listing.location,
     price: parsedPrice.price,
     priceRange: listing.priceRange,
+    panoramas: listing.panoramas,
     registrationCurrency: parsedRegistrationFee.registrationCurrency,
     registrationFee: parsedRegistrationFee.registrationFee,
     showers: String(listing.showers),
@@ -265,6 +269,7 @@ export function PropertyForm({
   const [form, setForm] = useState(() => (listing ? listingToForm(listing) : emptyForm));
   const [error, setError] = useState("");
   const [isUploadingImages, setIsUploadingImages] = useState(false);
+  const [isUploading360, setIsUploading360] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [customAmenity, setCustomAmenity] = useState("");
 
@@ -320,7 +325,7 @@ export function PropertyForm({
     event.preventDefault();
     setError("");
 
-    if (isUploadingImages) {
+    if (isUploadingImages || isUploading360) {
       setError("Wait for image uploads to finish before saving.");
       return;
     }
@@ -350,6 +355,7 @@ export function PropertyForm({
       price: formatPrice(form.currency, form.price),
       priceRange: form.priceRange,
       priceType: form.listingType,
+      panoramas: form.panoramas,
       registrationFee: formatRegistrationFee(form.registrationCurrency, form.registrationFee),
       showers: numberFromString(form.showers),
       slug: form.slug.trim() || slugFromTitle(form.title),
@@ -647,6 +653,13 @@ export function PropertyForm({
               required
             />
           </div>
+          <div className="md:col-span-2">
+            <Listing360Uploader
+              onBusyChange={setIsUploading360}
+              onChange={(panoramas) => updateForm("panoramas", panoramas)}
+              panoramas={form.panoramas}
+            />
+          </div>
         </div>
       </section>
 
@@ -751,10 +764,10 @@ export function PropertyForm({
         </Link>
         <button
           className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--theme-primary)] px-6 text-sm font-black text-white hover:bg-[var(--theme-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60"
-          disabled={isSaving || isUploadingImages || form.image === ""}
+          disabled={isSaving || isUploadingImages || isUploading360 || form.image === ""}
           type="submit"
         >
-          {isUploadingImages
+          {isUploadingImages || isUploading360
             ? "Uploading"
             : isSaving
               ? mode === "edit"

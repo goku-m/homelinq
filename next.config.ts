@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   allowedDevOrigins: ["192.168.43.50"],
   experimental: {
-    agentFeedback: true,
+    agentFeedback: false,
   },
   images: {
     localPatterns: [

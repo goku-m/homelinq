@@ -120,6 +120,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
             fill
             sizes="(min-width: 768px) 30vw, 90vw"
             src={getListingCardImageUrl(listing.image)}
+            unoptimized
           />
           <span
             className={`absolute left-4 top-4 rounded-full bg-[var(--theme-muted-teal)] px-3 py-1 text-xs font-black text-white`}

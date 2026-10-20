@@ -25,6 +25,7 @@ type ListingRow = {
   price: string;
   price_range: Listing["priceRange"];
   price_type: Listing["priceType"];
+  panoramas: Listing["panoramas"];
   registration_fee: string;
   showers: number;
   slug: string;
@@ -48,6 +49,7 @@ function fromRow(row: ListingRow): Listing {
 
     price: row.price,
     priceRange: row.price_range,
+    panoramas: row.panoramas ?? [],
     location: row.location,
     details: row.details,
 
@@ -80,6 +82,7 @@ function toDbValues(listing: ListingInput) {
     listing.priceType,
     listing.price,
     listing.priceRange,
+    JSON.stringify(listing.panoramas),
     listing.location,
     listing.details,
     listing.availability,
@@ -117,6 +120,7 @@ export async function listListings() {
       price_type,
       price,
       price_range,
+      panoramas,
       location,
       details,
       availability,
@@ -209,6 +213,7 @@ export async function searchListings(filters: ListingSearchFilters) {
       price_type,
       price,
       price_range,
+      panoramas,
       location,
       details,
       availability,
@@ -251,6 +256,7 @@ export async function listFeaturedListings() {
       price_type,
       price,
       price_range,
+      panoramas,
       location,
       details,
       availability,
@@ -296,6 +302,7 @@ export async function getListingBySlugFromDb(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,
@@ -341,6 +348,7 @@ export async function createListing(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,
@@ -377,7 +385,8 @@ export async function createListing(
         $18,
         $19,
         $20,
-        $21
+        $21,
+        $22
       )
       RETURNING
         id,
@@ -388,6 +397,7 @@ export async function createListing(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,
@@ -433,6 +443,7 @@ export async function updateListing(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,
@@ -479,22 +490,23 @@ export async function updateListing(
         price_type = $5,
         price = $6,
         price_range = $7,
-        location = $8,
-        details = $9,
-        availability = $10,
-        bedrooms = $11,
-        showers = $12,
-        garage = $13,
-        furnished = $14,
-        commission = $15,
-        registration_fee = $16,
-        image = $17,
-        gallery = $18,
-        lease_options = $19,
-        amenities = $20,
-        featured = $21,
+        panoramas = $8,
+        location = $9,
+        details = $10,
+        availability = $11,
+        bedrooms = $12,
+        showers = $13,
+        garage = $14,
+        furnished = $15,
+        commission = $16,
+        registration_fee = $17,
+        image = $18,
+        gallery = $19,
+        lease_options = $20,
+        amenities = $21,
+        featured = $22,
         updated_at = now()
-      WHERE slug = $22
+      WHERE slug = $23
       RETURNING
         id,
         slug,
@@ -504,6 +516,7 @@ export async function updateListing(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,
@@ -551,6 +564,7 @@ export async function deleteListing(
         price_type,
         price,
         price_range,
+        panoramas,
         location,
         details,
         availability,

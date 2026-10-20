@@ -1,4 +1,4 @@
-import type { Listing, ListingAvailability, ListingCategory, ListingPriceRange, ListingType } from "@/types/listing";
+import type { Listing, ListingAvailability, ListingCategory, ListingPanorama, ListingPriceRange, ListingType } from "@/types/listing";
 
 const listingTypes: ListingType[] = ["Rent", "Sale", "Lease"];
 const listingPriceRanges: ListingPriceRange[] = ["Per Day", "Per week", "Per month"];
@@ -31,6 +31,28 @@ function stringArray(value: unknown, field: string) {
   }
 
   return value;
+}
+
+function panoramaArray(value: unknown): ListingPanorama[] {
+  if (
+    !Array.isArray(value) ||
+    value.some(
+      (item) =>
+        typeof item !== "object" ||
+        item === null ||
+        typeof (item as { label?: unknown }).label !== "string" ||
+        typeof (item as { url?: unknown }).url !== "string" ||
+        (item as { label: string }).label.trim() === "" ||
+        (item as { url: string }).url.trim() === "",
+    )
+  ) {
+    throw new Error("panoramas must be an array of labelled image URLs");
+  }
+
+  return value.map((item) => ({
+    label: item.label.trim(),
+    url: item.url.trim(),
+  }));
 }
 
 function listingTypeValue(value: unknown, field: string) {
@@ -88,6 +110,7 @@ export function parseListingInput(body: unknown): Listing {
     price: stringValue(body.price, "price"),
     priceRange: listingPriceRangeValue(body.priceRange),
     priceType: listingTypeValue(body.priceType, "priceType"),
+    panoramas: panoramaArray(body.panoramas),
     registrationFee: stringValue(body.registrationFee, "registrationFee"),
     showers: numberValue(body.showers, "showers"),
     slug: stringValue(body.slug, "slug"),
@@ -119,6 +142,7 @@ export function parseListingPatch(body: unknown): Partial<Listing> {
   if (body.price !== undefined) patch.price = stringValue(body.price, "price");
   if (body.priceRange !== undefined) patch.priceRange = listingPriceRangeValue(body.priceRange);
   if (body.priceType !== undefined) patch.priceType = listingTypeValue(body.priceType, "priceType");
+  if (body.panoramas !== undefined) patch.panoramas = panoramaArray(body.panoramas);
   if (body.registrationFee !== undefined) patch.registrationFee = stringValue(body.registrationFee, "registrationFee");
   if (body.showers !== undefined) patch.showers = numberValue(body.showers, "showers");
   if (body.slug !== undefined) patch.slug = stringValue(body.slug, "slug");

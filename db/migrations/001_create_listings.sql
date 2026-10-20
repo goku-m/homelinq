@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS listings (
   price_type text NOT NULL CHECK (price_type IN ('Rent', 'Sale', 'Lease')),
   price text NOT NULL,
   price_range text NOT NULL DEFAULT 'Per month' CHECK (price_range IN ('Per Day', 'Per week', 'Per month')),
+  panoramas jsonb NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(panoramas) = 'array'),
   location text NOT NULL,
   details text NOT NULL,
   availability text NOT NULL CHECK (availability IN ('available', 'not available')),

@@ -434,6 +434,7 @@ function AnalyticsContent({
                     fill
                     sizes="40px"
                     src={property.image}
+                    unoptimized
                   />
                 </div>
                 <div className="min-w-0">
@@ -517,6 +518,7 @@ function PropertyGridCard({
           fill
           sizes="(min-width: 768px) 30vw, 90vw"
           src={getListingCardImageUrl(listing.image)}
+          unoptimized
         />
         <span className="absolute left-4 top-4 rounded-full bg-[var(--theme-primary)] px-3 py-1 text-xs font-black text-white">
           For {listing.listingType}
@@ -598,6 +600,7 @@ function PropertyListRow({
           fill
           sizes="220px"
           src={getListingCardImageUrl(listing.image)}
+          unoptimized
         />
         <span className="absolute left-3 top-3 rounded-full bg-[var(--theme-primary)] px-3 py-1 text-xs font-black text-white">
           For {listing.listingType}

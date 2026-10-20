@@ -3,7 +3,7 @@ import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { ListingCard } from "@/components/listing-card";
 import { MobileMenu, type NavItem } from "@/components/mobile-menu";
 import { QuickSearchModal } from "@/components/quick-search-modal";
-import { listFeaturedListings } from "@/lib/listing-repository";
+import { listFeaturedListings, listListings } from "@/lib/listing-repository";
 
 const navItems: NavItem[] = [
   { href: "/explore?category=Sale", label: "For Sale" },
@@ -71,7 +71,10 @@ function LogoMark() {
 }
 
 export default async function Home() {
-  const featuredListings = await listFeaturedListings();
+  const [featuredListings, listings] = await Promise.all([
+    listFeaturedListings(),
+    listListings(),
+  ]);
 
   return (
     <main className="min-h-screen bg-[var(--theme-surface)] text-[#111827]">
@@ -214,7 +217,7 @@ export default async function Home() {
               <div>
                 <dt className="font-semibold text-slate-400">Available now</dt>
                 <dd className="mt-1 text-xl font-black text-slate-950">
-                  226
+                  {listings.length}
                 </dd>
               </div>
               <div>

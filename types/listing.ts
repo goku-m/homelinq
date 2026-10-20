@@ -4,6 +4,11 @@ export type ListingType = "Rent" | "Sale" | "Lease";
 export type ListingPriceRange = "Per Day" | "Per week" | "Per month";
 export type ListingCategory = "house" | "apartment" | "office" | "shop" | "land";
 
+export type ListingPanorama = {
+    label: string;
+    url: string;
+};
+
 export type Listing = {
     id?: string;
     category: ListingCategory;
@@ -23,6 +28,7 @@ export type Listing = {
     price: string;
     priceRange: ListingPriceRange;
     priceType: ListingType;
+    panoramas: ListingPanorama[];
     registrationFee: string;
     showers: number;
     slug: string;

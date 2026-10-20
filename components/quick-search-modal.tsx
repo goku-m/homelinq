@@ -180,7 +180,7 @@ export function QuickSearchModal({ variant }: QuickSearchModalProps) {
         onClick={() => setIsOpen(true)}
         type="button"
       >
-        Find It Here
+        Find Them Here!
         <ChevronIcon />
       </button>
     ) : (
