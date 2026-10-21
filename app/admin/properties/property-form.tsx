@@ -30,6 +30,10 @@ const categoryOptions: { label: string; value: ListingCategory }[] = [
   { label: "Office", value: "office" },
   { label: "Shop", value: "shop" },
   { label: "Land", value: "land" },
+  { label: "Townhouse", value: "townhouse" },
+  { label: "Warehouse", value: "warehouse" },
+  { label: "Commercial space", value: "commercial-space" },
+  { label: "Beachhouse", value: "beachhouse" },
 ];
 
 type ListingFormState = {

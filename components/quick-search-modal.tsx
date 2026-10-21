@@ -12,14 +12,26 @@ const categories = [
   "Lease",
 ];
 
-const propertyTypes = ["house", "apartment", "office", "shop", "land"];
+const propertyTypes = [
+  "house",
+  "apartment",
+  "office",
+  "shop",
+  "land",
+  "townhouse",
+  "warehouse",
+  "commercial-space",
+  "beachhouse",
+];
 const bedOptions = ["1 bed", "2 beds", "3 beds", "4 beds", "5+ beds"];
 const currencies = ["GHC", "USD"];
 const minPrices = ["No min", "1,000", "2,500", "5,000", "10,000", "100,000"];
 const maxPrices = ["No max", "5,000", "10,000", "25,000", "100,000", "750,000"];
 
 function optionLabel(option: string) {
-  return option.replace(/\b\w/g, (character) => character.toUpperCase());
+  return option
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 function SearchIcon({ className = "h-4 w-4" }: { className?: string }) {

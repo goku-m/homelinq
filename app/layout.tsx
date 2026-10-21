@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | HomeLinq Properties",
   },
   description:
-    "Discover homes, apartments, offices, shops, land, and commercial properties for sale, rent, and lease in Ghana.",
+    "Discover homes, apartments, offices, shops, land, townhouses, warehouses, commercial spaces, beachhouses, and other properties for sale, rent, and lease in Ghana.",
   keywords: [
     "properties in Ghana",
     "houses for sale in Accra",
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               "@type": "RealEstateAgent",
               name: "HomeLinq Properties",
               url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com",
-              telephone: "+233 54 100 0010",
+              telephone: "0242222265",
               email: "info@homelinqproperties.com",
               address: {
                 "@type": "PostalAddress",

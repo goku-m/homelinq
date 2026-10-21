@@ -6,6 +6,7 @@ type ContactPropertyActionProps = {
   email: string;
   listingSlug: string;
   phone: string;
+  whatsappPhone: string;
   subject: string;
   variant: "button" | "text";
 };
@@ -57,13 +58,14 @@ export function ContactPropertyAction({
   email,
   listingSlug,
   phone,
+  whatsappPhone,
   subject,
   variant,
 }: ContactPropertyActionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const mailtoHref = `mailto:${email}?subject=${subject}`;
   const phoneHref = `tel:${phone.replace(/\D/g, "")}`;
-  const whatsappHref = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hello, I am interested in this property. Reference: ${listingSlug}`)}`;
+  const whatsappHref = `https://wa.me/${whatsappPhone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hello, I am interested in this property. Reference: ${listingSlug}`)}`;
 
   const trackLead = (channel: "email" | "phone" | "whatsapp") => {
     const sessionId = window.localStorage.getItem("homelinq_session_id");
@@ -166,9 +168,11 @@ export function ContactPropertyAction({
             </div>
 
             <div className="mt-5 grid gap-3">
-              <div className="hidden min-h-20 rounded-xl bg-[var(--theme-spring)] px-4 py-3 text-[var(--theme-ink)] sm:block">
-                <p className="text-sm font-black">Call or WhatsApp</p>
+              <div className="hidden rounded-xl bg-[var(--theme-spring)] px-4 py-3 text-[var(--theme-ink)] sm:block">
+                <p className="text-sm font-black">Call</p>
                 <p className="mt-1 text-xl font-black tracking-wide">{phone}</p>
+                <p className="mt-3 text-sm font-black">WhatsApp</p>
+                <p className="mt-1 text-xl font-black tracking-wide">{whatsappPhone}</p>
               </div>
               <div className="grid gap-3 sm:hidden">
                 <a
@@ -187,7 +191,7 @@ export function ContactPropertyAction({
                   target="_blank"
                 >
                   <span>WhatsApp</span>
-                  <span className="text-base">{phone}</span>
+                  <span className="text-base">{whatsappPhone}</span>
                 </a>
               </div>
               <a

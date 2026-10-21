@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const contactEmail = "info@homelinqproperties.com";
-const contactPhone = "+233 54 100 0010";
+const contactPhone = "0242222265";
 
 export default function ContactPage() {
   return (
@@ -50,7 +50,7 @@ export default function ContactPage() {
             href={`tel:${contactPhone.replace(/\s+/g, "")}`}
           >
             <p className="text-xs font-black uppercase tracking-wider text-[var(--theme-primary)]">
-              Call or WhatsApp
+              Call
             </p>
             <p className="mt-3 text-lg font-black text-[var(--theme-ink)]">{contactPhone}</p>
             <p className="mt-2 text-sm text-slate-500">Speak with our property team.</p>

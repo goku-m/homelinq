@@ -3,7 +3,17 @@ import type { Listing, ListingAvailability, ListingCategory, ListingPanorama, Li
 const listingTypes: ListingType[] = ["Rent", "Sale", "Lease"];
 const listingPriceRanges: ListingPriceRange[] = ["Per Day", "Per week", "Per month"];
 const availabilityTypes: ListingAvailability[] = ["available", "not available"];
-const listingCategories: ListingCategory[] = ["house", "apartment", "office", "shop", "land"];
+const listingCategories: ListingCategory[] = [
+  "house",
+  "apartment",
+  "office",
+  "shop",
+  "land",
+  "townhouse",
+  "warehouse",
+  "commercial-space",
+  "beachhouse",
+];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -81,7 +91,7 @@ function availabilityValue(value: unknown) {
 
 function listingCategoryValue(value: unknown) {
   if (!listingCategories.includes(value as ListingCategory)) {
-    throw new Error("category must be house, apartment, office, shop, or land");
+    throw new Error("category must be house, apartment, office, shop, land, townhouse, warehouse, commercial-space, or beachhouse");
   }
 
   return value as ListingCategory;

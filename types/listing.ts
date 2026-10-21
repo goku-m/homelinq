@@ -2,7 +2,16 @@ export type ListingAvailability = "available" | "not available";
 
 export type ListingType = "Rent" | "Sale" | "Lease";
 export type ListingPriceRange = "Per Day" | "Per week" | "Per month";
-export type ListingCategory = "house" | "apartment" | "office" | "shop" | "land";
+export type ListingCategory =
+    | "house"
+    | "apartment"
+    | "office"
+    | "shop"
+    | "land"
+    | "townhouse"
+    | "warehouse"
+    | "commercial-space"
+    | "beachhouse";
 
 export type ListingPanorama = {
     label: string;

@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Explore Properties for Sale, Rent, and Lease in Ghana",
   description:
-    "Browse verified HomeLinq properties including houses, apartments, offices, shops, and land across Ghana.",
+    "Browse verified HomeLinq properties including houses, apartments, offices, shops, land, townhouses, warehouses, commercial spaces, and beachhouses across Ghana.",
   alternates: { canonical: "/explore" },
 };
 
@@ -48,7 +48,17 @@ async function ExploreResults({ searchParams }: { searchParams: ExploreSearchPar
   const listings = await searchListings({
     beds: value("beds")?.split(" ")[0],
     listingTypes,
-    propertyCategory: ["house", "apartment", "office", "shop", "land"].includes(propertyCategory ?? "")
+    propertyCategory: [
+      "house",
+      "apartment",
+      "office",
+      "shop",
+      "land",
+      "townhouse",
+      "warehouse",
+      "commercial-space",
+      "beachhouse",
+    ].includes(propertyCategory ?? "")
       ? (propertyCategory as ListingCategory)
       : undefined,
     currency: currency === "GHC" || currency === "USD" ? currency : undefined,

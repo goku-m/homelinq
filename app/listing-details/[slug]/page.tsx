@@ -91,7 +91,8 @@ async function ListingDetailsContent({
   const leaseOptionsLabel = listing.listingType === "Sale" ? "Price" : "Lease options";
   const contactSubject = encodeURIComponent(`Inquiry about ${listing.title}`);
   const contactEmail = "info@homelinqproperties.com";
-  const contactPhone = "+233 54 100 0010";
+  const contactPhone = "0242222265";
+  const contactWhatsappPhone = "+233 54 100 0010";
   const listingSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
@@ -140,6 +141,7 @@ async function ListingDetailsContent({
             email={contactEmail}
             listingSlug={listing.slug}
             phone={contactPhone}
+            whatsappPhone={contactWhatsappPhone}
             subject={contactSubject}
             variant="button"
           />
@@ -213,6 +215,7 @@ async function ListingDetailsContent({
             email={contactEmail}
             listingSlug={listing.slug}
             phone={contactPhone}
+            whatsappPhone={contactWhatsappPhone}
             subject={contactSubject}
             variant="button"
           />

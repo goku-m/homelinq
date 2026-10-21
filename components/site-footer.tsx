@@ -77,7 +77,7 @@ export function SiteFooter() {
                 </p>
                 <div>
                   <p className="font-black text-white">Contacts</p>
-                  <p className="mt-1">+233 54 100 0010</p>
+                  <p className="mt-1">0242222265</p>
                 </div>
                 <div>
                   <p className="font-black text-white">Location</p>
