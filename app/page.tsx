@@ -89,11 +89,11 @@ export default async function Home() {
 
           <nav
             aria-label="Primary navigation"
-            className="ml-auto mr-8 hidden items-center gap-8 text-base font-medium text-white/86 md:flex"
+            className="ml-auto mr-8 hidden items-center gap-8 text-base font-bold text-white/86 md:flex"
           >
             {navItems.map((item) => (
               <a
-                className="transition hover:text-white"
+                className="transition duration-200 hover:-translate-y-0.5 hover:scale-105 hover:text-white hover:drop-shadow-[0_4px_8px_rgba(255,255,255,0.2)]"
                 href={item.href}
                 key={item.label}
               >
