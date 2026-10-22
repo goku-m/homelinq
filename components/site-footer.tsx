@@ -30,7 +30,9 @@ export function SiteFooter() {
       <div className="relative mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-8 md:grid-cols-[0.85fr_1.15fr] md:gap-10">
         <div className="border-white/12 md:border-r md:pr-10">
           <Link className="inline-flex items-center gap-3 font-bold" href="/">
-            <BrandLogo className="max-w-none" width={230} />
+            <span className="brand-logo-wrapper">
+              <BrandLogo className="brand-logo-image" />
+            </span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-6 text-white/68">
             Linking clients to commercial spaces, homes, and investment-ready

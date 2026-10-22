@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+.brand-logo-wrapper {
+  display: block;
+  flex: none;
+  width: 230px;
+}
+
+.brand-logo-image {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .brand-logo-wrapper {
+    width: 180px;
+  }
+}
+
 :root {
   --background: #f5f7fb;
   --foreground: var(--theme-ink);

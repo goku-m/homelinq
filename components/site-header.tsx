@@ -30,7 +30,9 @@ export function SiteHeader() {
     <header className="bg-[var(--theme-ink)] text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
         <Link className="flex items-center gap-2.5 font-bold tracking-tight" href="/">
-          <BrandLogo className="max-w-none" width={230} />
+          <span className="brand-logo-wrapper">
+            <BrandLogo className="brand-logo-image" />
+          </span>
         </Link>
 
         <nav

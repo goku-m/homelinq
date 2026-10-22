@@ -82,7 +82,9 @@ export default async function Home() {
       <HeroCarousel slides={heroSlides}>
         <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
           <a className="flex items-center gap-2.5 font-bold tracking-tight" href="#">
-            <BrandLogo className="max-w-none" priority width={230} />
+            <span className="brand-logo-wrapper">
+              <BrandLogo className="brand-logo-image" priority />
+            </span>
           </a>
 
           <nav

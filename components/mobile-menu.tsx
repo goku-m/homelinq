@@ -83,7 +83,9 @@ export function MobileMenu({ items }: MobileMenuProps) {
       id="mobile-navigation"
     >
       <div className="flex items-center justify-between px-5 py-6">
-        <BrandLogo className="w-[230px] max-w-none" />
+        <span className="brand-logo-wrapper">
+          <BrandLogo className="brand-logo-image" />
+        </span>
         <button
           aria-label="Close navigation menu"
           className="flex h-11 w-11 items-center justify-center rounded-full bg-white/12 text-white transition hover:bg-white/20"
