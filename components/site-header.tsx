@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "./brand-logo";
 import { MobileMenu, type NavItem } from "./mobile-menu";
 
 const navItems: NavItem[] = [
@@ -9,7 +10,7 @@ const navItems: NavItem[] = [
   { href: "/contact", label: "Contact" },
 ];
 
-function LogoMark() {
+export function LogoMark() {
   return (
     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[var(--theme-muted-teal)] shadow-sm">
       <svg
@@ -29,8 +30,7 @@ export function SiteHeader() {
     <header className="bg-[var(--theme-ink)] text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
         <Link className="flex items-center gap-2.5 font-bold tracking-tight" href="/">
-          <LogoMark />
-          <span className="text-xl">HomeLinq</span>
+          <BrandLogo className="max-w-none" width={230} />
         </Link>
 
         <nav

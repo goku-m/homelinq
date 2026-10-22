@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+import { BrandLogo } from "./brand-logo";
 
 export type NavItem = {
   href: string;
@@ -82,7 +83,7 @@ export function MobileMenu({ items }: MobileMenuProps) {
       id="mobile-navigation"
     >
       <div className="flex items-center justify-between px-5 py-6">
-        <span className="text-xl font-black tracking-normal">HomeLinq</span>
+        <BrandLogo className="w-[230px] max-w-none" />
         <button
           aria-label="Close navigation menu"
           className="flex h-11 w-11 items-center justify-center rounded-full bg-white/12 text-white transition hover:bg-white/20"

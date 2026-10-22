@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BrandLogo } from "@/components/brand-logo";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { ListingCard } from "@/components/listing-card";
 import { MobileMenu, type NavItem } from "@/components/mobile-menu";
@@ -55,7 +56,7 @@ function ChevronIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
   );
 }
 
-function LogoMark() {
+export function LogoMark() {
   return (
     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[var(--theme-muted-teal)] shadow-sm">
       <svg
@@ -81,8 +82,7 @@ export default async function Home() {
       <HeroCarousel slides={heroSlides}>
         <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
           <a className="flex items-center gap-2.5 font-bold tracking-tight" href="#">
-            <LogoMark />
-            <span className="text-xl">HomeLinq</span>
+            <BrandLogo className="max-w-none" priority width={230} />
           </a>
 
           <nav

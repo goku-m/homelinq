@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BrandLogo } from "@/components/brand-logo";
 import type {
   AdminAnalyticsData,
   AdminDashboardData,
@@ -113,7 +114,7 @@ function AdminBrand({ hasBorder = true }: { hasBorder?: boolean }) {
           <path d="M12 3.2 3.9 7.7v8.6l8.1 4.5 8.1-4.5V7.7L12 3.2Zm0 3.1 4.9 2.7-4.9 2.7L7.1 9 12 6.3Zm-5.2 5.4 3.7 2v4.3l-3.7-2.1v-4.2Zm10.4 4.2-3.7 2.1v-4.3l3.7-2v4.2Z" />
         </svg>
       </span>
-      <span className="text-lg font-black">HomeLinq</span>
+      <BrandLogo className="w-[130px]" />
     </div>
   );
 }
