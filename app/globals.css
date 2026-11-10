@@ -12,9 +12,17 @@
   width: 100%;
 }
 
+.site-header .brand-logo-wrapper {
+  width: 175px;
+}
+
 @media (max-width: 767px) {
   .brand-logo-wrapper {
     width: 180px;
+  }
+
+  .site-header .brand-logo-wrapper {
+    width: 140px;
   }
 }
 

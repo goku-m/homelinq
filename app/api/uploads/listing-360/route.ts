@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 import { NextResponse } from "next/server";
+import { isAdminRequest } from "@/lib/admin-auth";
 
 const maxFileSize = 25 * 1024 * 1024;
 const maxFiles = 10;
@@ -67,6 +68,10 @@ async function uploadToCloudinary(file: File) {
 }
 
 export async function POST(request: Request) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const formData = await request.formData();
     const files = formData.getAll("files").filter(isFile);

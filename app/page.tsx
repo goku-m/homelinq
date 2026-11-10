@@ -1,18 +1,9 @@
 import Image from "next/image";
-import { BrandLogo } from "@/components/brand-logo";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { ListingCard } from "@/components/listing-card";
-import { MobileMenu, type NavItem } from "@/components/mobile-menu";
 import { QuickSearchModal } from "@/components/quick-search-modal";
+import { SiteHeader } from "@/components/site-header";
 import { listFeaturedListings, listListings } from "@/lib/listing-repository";
-
-const navItems: NavItem[] = [
-  { href: "/explore?category=Sale", label: "For Sale" },
-  { href: "/explore?category=Rent&includeLease=true", label: "For Rent" },
-  { href: "/about", label: "About" },
-  { href: "#listings", label: "Listings" },
-  { href: "/contact", label: "Contact" },
-];
 
 const heroSlides: HeroSlide[] = [
   {
@@ -56,21 +47,6 @@ function ChevronIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
   );
 }
 
-export function LogoMark() {
-  return (
-    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[var(--theme-muted-teal)] shadow-sm">
-      <svg
-        aria-hidden="true"
-        className="h-5 w-5"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 3.2 3.9 7.7v8.6l8.1 4.5 8.1-4.5V7.7L12 3.2Zm0 3.1 4.9 2.7-4.9 2.7L7.1 9 12 6.3Zm-5.2 5.4 3.7 2v4.3l-3.7-2.1v-4.2Zm10.4 4.2-3.7 2.1v-4.3l3.7-2v4.2Z" />
-      </svg>
-    </span>
-  );
-}
-
 export default async function Home() {
   const [featuredListings, listings] = await Promise.all([
     listFeaturedListings(),
@@ -79,34 +55,8 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[var(--theme-surface)] text-[#111827]">
+      <SiteHeader />
       <HeroCarousel slides={heroSlides}>
-        <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
-          <a className="flex items-center gap-2.5 font-bold tracking-tight" href="#">
-            <span className="brand-logo-wrapper">
-              <BrandLogo className="brand-logo-image" priority />
-            </span>
-          </a>
-
-          <nav
-            aria-label="Primary navigation"
-            className="ml-auto mr-8 hidden items-center gap-8 text-base font-bold text-white/86 md:flex"
-          >
-            {navItems.map((item) => (
-              <a
-                className="transition duration-200 hover:-translate-y-0.5 hover:scale-105 hover:text-white hover:drop-shadow-[0_4px_8px_rgba(255,255,255,0.2)]"
-                href={item.href}
-                key={item.label}
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <MobileMenu items={navItems} />
-          </div>
-        </header>
-
         <div className="relative z-10 mx-auto flex max-w-6xl px-5 pb-12 pt-8 sm:px-8 md:pb-16 md:pt-10">
           <div className="max-w-[470px]">
             <h1 className="text-[clamp(2rem,4vw,3.8rem)] font-black leading-[0.98] tracking-normal text-white drop-shadow-[0_7px_18px_rgba(0,0,0,0.34)]">

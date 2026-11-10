@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getListingCardImageUrl } from "@/lib/listing-image-url";
+import { formatPriceDisplay } from "@/lib/format-price";
 import { Listing } from "@/types/listing";
 
 function BedIcon() {
@@ -139,8 +140,9 @@ export function ListingCard({ listing }: { listing: Listing }) {
               {listing.title}
             </h3>
             <div className="mt-2">
-              <p className="text-base font-black text-[var(--theme-muted-teal)]">
-                {listing.price}
+              <p className="flex flex-wrap items-center gap-2 text-base font-black text-[var(--theme-muted-teal)]">
+                {formatPriceDisplay(listing.price)}
+                {listing.negotiable ? <span className="text-xs font-bold text-slate-500">Negotiable</span> : null}
               </p>
               <p className="text-[11px] font-bold uppercase tracking-normal text-slate-400">
                 {priceLabel}

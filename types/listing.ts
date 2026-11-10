@@ -35,6 +35,7 @@ export type Listing = {
     leaseOptions: string[];
     location: string;
     price: string;
+    negotiable: boolean;
     priceRange: ListingPriceRange;
     priceType: ListingType;
     panoramas: ListingPanorama[];

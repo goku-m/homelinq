@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { connection } from "next/server";
 import { getAdminDashboardData } from "@/lib/admin-dashboard";
+import { isAdminRequest } from "@/lib/admin-auth";
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   await connection();
 
   try {

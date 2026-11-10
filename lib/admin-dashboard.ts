@@ -19,6 +19,7 @@ type AdminListingRow = {
   listing_type: ListingType;
   location: string;
   price: string;
+  negotiable: boolean;
   price_range: Listing["priceRange"];
   price_type: ListingType;
   panoramas: Listing["panoramas"];
@@ -53,6 +54,7 @@ export type AdminRecentListing = {
   featured: boolean;
   location: string;
   price: string;
+  negotiable: boolean;
   slug: string;
   title: string;
   type: ListingType;
@@ -111,6 +113,7 @@ function listingFromRow(row: Required<AdminListingRow>): Listing {
     listingType: row.listing_type,
     location: row.location,
     price: row.price,
+    negotiable: row.negotiable,
     priceRange: row.price_range,
     panoramas: row.panoramas ?? [],
     priceType: row.price_type,
@@ -187,6 +190,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       listing_type,
       price_type,
       price,
+      negotiable,
       price_range,
       panoramas,
       location,
@@ -261,6 +265,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       featured: listing.featured,
       location: listing.location,
       price: listing.price,
+      negotiable: listing.negotiable,
       slug: listing.slug,
       title: listing.title,
       type: listing.listing_type,
@@ -284,6 +289,7 @@ export async function getAdminListings() {
       listing_type,
       price_type,
       price,
+      negotiable,
       price_range,
       panoramas,
       location,

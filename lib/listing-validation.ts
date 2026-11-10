@@ -101,6 +101,9 @@ export function parseListingInput(body: unknown): Listing {
   if (!isRecord(body)) {
     throw new Error("Request body must be an object");
   }
+  if (body.negotiable !== undefined && typeof body.negotiable !== "boolean") {
+    throw new Error("negotiable must be a boolean");
+  }
 
   return {
     category: listingCategoryValue(body.category),
@@ -118,6 +121,7 @@ export function parseListingInput(body: unknown): Listing {
     leaseOptions: stringArray(body.leaseOptions, "leaseOptions"),
     location: stringValue(body.location, "location"),
     price: stringValue(body.price, "price"),
+    negotiable: body.negotiable === true,
     priceRange: listingPriceRangeValue(body.priceRange),
     priceType: listingTypeValue(body.priceType, "priceType"),
     panoramas: panoramaArray(body.panoramas),
@@ -150,6 +154,10 @@ export function parseListingPatch(body: unknown): Partial<Listing> {
   if (body.leaseOptions !== undefined) patch.leaseOptions = stringArray(body.leaseOptions, "leaseOptions");
   if (body.location !== undefined) patch.location = stringValue(body.location, "location");
   if (body.price !== undefined) patch.price = stringValue(body.price, "price");
+  if (body.negotiable !== undefined) {
+    if (typeof body.negotiable !== "boolean") throw new Error("negotiable must be a boolean");
+    patch.negotiable = body.negotiable;
+  }
   if (body.priceRange !== undefined) patch.priceRange = listingPriceRangeValue(body.priceRange);
   if (body.priceType !== undefined) patch.priceType = listingTypeValue(body.priceType, "priceType");
   if (body.panoramas !== undefined) patch.panoramas = panoramaArray(body.panoramas);

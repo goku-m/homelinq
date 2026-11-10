@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { createListing, listListings } from "@/lib/listing-repository";
 import { parseListingInput } from "@/lib/listing-validation";
+import { isAdminRequest } from "@/lib/admin-auth";
 
 export async function GET() {
   const listings = await listListings();
@@ -10,6 +11,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const listing = parseListingInput(await request.json());
     const created = await createListing(listing);

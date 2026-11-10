@@ -6,6 +6,7 @@ import {
   updateListing,
 } from "@/lib/listing-repository";
 import { parseListingPatch } from "@/lib/listing-validation";
+import { isAdminRequest } from "@/lib/admin-auth";
 
 export async function GET(
   _request: Request,
@@ -25,6 +26,10 @@ export async function PATCH(
   request: Request,
   context: RouteContext<"/api/listings/[slug]">,
 ) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const { slug } = await context.params;
     const patch = parseListingPatch(await request.json());
@@ -48,9 +53,13 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   context: RouteContext<"/api/listings/[slug]">,
 ) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   const { slug } = await context.params;
   const listing = await deleteListing(slug);
 

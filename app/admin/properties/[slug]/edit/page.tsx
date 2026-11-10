@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getListingBySlugFromDb } from "@/lib/listing-repository";
+import { requireAdminPage } from "@/lib/admin-auth";
 import { PropertyForm } from "../../property-form";
 
 export const instant = false;
@@ -11,6 +12,7 @@ export default async function EditPropertyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  await requireAdminPage(`/admin/properties/${encodeURIComponent(slug)}/edit`);
   const listing = await getListingBySlugFromDb(slug);
 
   if (!listing) {

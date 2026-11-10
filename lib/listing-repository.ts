@@ -23,6 +23,7 @@ type ListingRow = {
   listing_type: Listing["listingType"];
   location: string;
   price: string;
+  negotiable: boolean;
   price_range: Listing["priceRange"];
   price_type: Listing["priceType"];
   panoramas: Listing["panoramas"];
@@ -48,6 +49,7 @@ function fromRow(row: ListingRow): Listing {
     priceType: row.price_type,
 
     price: row.price,
+    negotiable: row.negotiable,
     priceRange: row.price_range,
     panoramas: row.panoramas ?? [],
     location: row.location,
@@ -97,6 +99,7 @@ function toDbValues(listing: ListingInput) {
     listing.leaseOptions,
     listing.amenities,
     Boolean(listing.featured),
+    listing.negotiable,
   ];
 }
 
@@ -134,7 +137,8 @@ export async function listListings() {
       gallery,
       lease_options,
       amenities,
-      featured
+      featured,
+      negotiable
     FROM listings
     ORDER BY created_at DESC, title ASC
   `);
@@ -227,7 +231,8 @@ export async function searchListings(filters: ListingSearchFilters) {
       gallery,
       lease_options,
       amenities,
-      featured
+      featured,
+      negotiable
     FROM listings
     ${conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : ""}
     ORDER BY created_at DESC, title ASC
@@ -270,7 +275,8 @@ export async function listFeaturedListings() {
       gallery,
       lease_options,
       amenities,
-      featured
+      featured,
+      negotiable
     FROM listings
     WHERE featured = true
     ORDER BY created_at DESC, title ASC
@@ -316,7 +322,8 @@ export async function getListingBySlugFromDb(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
       FROM listings
       WHERE slug = $1
       LIMIT 1
@@ -362,7 +369,8 @@ export async function createListing(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
       )
       VALUES (
         $1,
@@ -386,7 +394,8 @@ export async function createListing(
         $19,
         $20,
         $21,
-        $22
+        $22,
+        $23
       )
       RETURNING
         id,
@@ -411,7 +420,8 @@ export async function createListing(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
     `,
     toDbValues(listing),
   );
@@ -457,7 +467,8 @@ export async function updateListing(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
       FROM listings
       WHERE slug = $1
       LIMIT 1
@@ -505,8 +516,9 @@ export async function updateListing(
         lease_options = $20,
         amenities = $21,
         featured = $22,
+        negotiable = $23,
         updated_at = now()
-      WHERE slug = $23
+      WHERE slug = $24
       RETURNING
         id,
         slug,
@@ -530,7 +542,8 @@ export async function updateListing(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
     `,
     [
       ...toDbValues(next),
@@ -578,7 +591,8 @@ export async function deleteListing(
         gallery,
         lease_options,
         amenities,
-        featured
+        featured,
+        negotiable
     `,
     [slug],
   );

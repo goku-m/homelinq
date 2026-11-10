@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import type { Metadata } from "next";
 import { getListingBySlugFromDb, listListings } from "@/lib/listing-repository";
+import { formatPriceDisplay } from "@/lib/format-price";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ContactPropertyAction } from "./contact-property-action";
@@ -46,7 +47,7 @@ export async function generateMetadata({
     return { title: "Property not found" };
   }
 
-  const description = `${listing.title} in ${listing.location}. ${listing.price}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
+  const description = `${listing.title} in ${listing.location}. ${formatPriceDisplay(listing.price)}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
   return {
     title: `${listing.title} in ${listing.location}`,
     description,
@@ -131,7 +132,8 @@ async function ListingDetailsContent({
             {listing.title} at {listing.location}
           </h1>
           <p className="w-full shrink-0 rounded-lg bg-[var(--theme-spring)] px-4 py-2 text-2xl font-black text-[#622347] md:w-auto">
-            {listing.price}
+            {formatPriceDisplay(listing.price)}
+            {listing.negotiable ? <span className="ml-2 text-sm font-semibold">Negotiable</span> : null}
             <span className="text-sm font-medium">{priceSuffix}</span>
           </p>
         </div>
@@ -171,7 +173,8 @@ async function ListingDetailsContent({
             value={
               listing.listingType === "Sale" ? (
                 <span className="rounded-md bg-[var(--theme-surface)] px-3 py-2 font-black text-[var(--theme-primary)]">
-                  {listing.price}
+                  {formatPriceDisplay(listing.price)}
+                  {listing.negotiable ? <span className="ml-2 text-xs font-semibold">Negotiable</span> : null}
                 </span>
               ) : (
                 <div className="grid gap-2 sm:grid-cols-2">
@@ -180,7 +183,7 @@ async function ListingDetailsContent({
                       className="rounded-md bg-[var(--theme-surface)] px-3 py-2 text-[var(--theme-ink)]"
                       key={`${option}-${index}`}
                     >
-                      {option}
+                      {formatPriceDisplay(option)}
                     </span>
                   ))}
                 </div>
@@ -188,7 +191,7 @@ async function ListingDetailsContent({
             }
           />
           <DetailRow label="Commission" value={listing.commission} />
-          <DetailRow label="Registration fee" value={listing.registrationFee} />
+          <DetailRow label="Registration fee" value={formatPriceDisplay(listing.registrationFee)} />
           <DetailRow label="Bedrooms" value={listing.bedrooms} />
           <DetailRow label="Bathrooms" value={listing.showers} />
           <DetailRow label="Garage" value={listing.garage} />

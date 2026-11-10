@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
+import { formatPriceDisplay } from "@/lib/format-price";
 import type {
   AdminAnalyticsData,
   AdminDashboardData,
@@ -49,6 +51,7 @@ type AdminIconName =
   | "grid"
   | "home"
   | "list"
+  | "logout"
   | "menu"
   | "overview"
   | "plus"
@@ -85,6 +88,7 @@ function Icon({ name }: { name: AdminIconName }) {
     grid: <path d="M4 4h6v6H4V4ZM14 4h6v6h-6V4ZM4 14h6v6H4v-6ZM14 14h6v6h-6v-6Z" />,
     home: <path d="M3 11.5 12 4l9 7.5V21h-6v-6H9v6H3v-9.5Z" />,
     list: <path d="M8 6h13M8 12h13M8 18h13M3 6h.1M3 12h.1M3 18h.1" />,
+    logout: <path d="M10 17l5-5-5-5m5 5H3m9-9h5a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-5" />,
     menu: <path d="M4 7h16M4 12h16M4 17h16" />,
     overview: <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" />,
     plus: <path d="M12 5v14M5 12h14" />,
@@ -109,11 +113,6 @@ function Icon({ name }: { name: AdminIconName }) {
 function AdminBrand({ hasBorder = true }: { hasBorder?: boolean }) {
   return (
     <div className={`flex h-16 items-center gap-3 px-4 ${hasBorder ? "border-b border-white/10" : ""}`}>
-      <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-[var(--theme-muted-teal)] shadow-sm">
-        <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 3.2 3.9 7.7v8.6l8.1 4.5 8.1-4.5V7.7L12 3.2Zm0 3.1 4.9 2.7-4.9 2.7L7.1 9 12 6.3Zm-5.2 5.4 3.7 2v4.3l-3.7-2.1v-4.2Zm10.4 4.2-3.7 2.1v-4.3l3.7-2v4.2Z" />
-        </svg>
-      </span>
       <BrandLogo className="w-[130px]" />
     </div>
   );
@@ -121,9 +120,11 @@ function AdminBrand({ hasBorder = true }: { hasBorder?: boolean }) {
 
 function AdminSidebarNav({
   activeSection,
+  onLogout,
   onNavigate,
 }: {
   activeSection: AdminSection;
+  onLogout: () => void;
   onNavigate: (section: AdminSection) => void;
 }) {
   return (
@@ -146,6 +147,14 @@ function AdminSidebarNav({
         <Icon name="home" />
         Back to Home
       </Link>
+      <button
+        className="flex items-center gap-3 rounded-lg px-3 py-3 text-left text-white/78 transition hover:bg-white/8 hover:text-white"
+        onClick={onLogout}
+        type="button"
+      >
+        <Icon name="logout" />
+        Log out
+      </button>
     </nav>
   );
 }
@@ -296,7 +305,10 @@ function DashboardContent({ dashboard }: { dashboard: AdminDashboardData }) {
                       {listing.availability}
                     </span>
                   </td>
-                  <td className="max-w-0 break-words px-5 py-4 font-black text-slate-950">{listing.price}</td>
+                  <td className="max-w-0 break-words px-5 py-4 font-black text-slate-950">
+                    {formatPriceDisplay(listing.price)}
+                    {listing.negotiable ? <span className="ml-2 text-xs font-bold text-slate-500">Negotiable</span> : null}
+                  </td>
                   <td className="hidden px-5 py-4 font-semibold text-slate-500 md:table-cell">{formatTime(listing.updatedAt)}</td>
                 </tr>
               ))}
@@ -542,7 +554,8 @@ function PropertyGridCard({
           </Link>
           <div className="mt-2">
             <p className="text-base font-black text-[var(--theme-primary)]">
-              {listing.price}
+              {formatPriceDisplay(listing.price)}
+              {listing.negotiable ? <span className="ml-2 text-xs font-bold text-slate-500">Negotiable</span> : null}
             </p>
             <p className="text-[11px] font-bold uppercase tracking-normal text-slate-400">
               {priceLabel}
@@ -616,7 +629,10 @@ function PropertyListRow({
             {listing.title}
           </Link>
           <div className="shrink-0 text-right">
-            <p className="text-base font-black text-[var(--theme-primary)]">{listing.price}</p>
+            <p className="text-base font-black text-[var(--theme-primary)]">
+              {formatPriceDisplay(listing.price)}
+              {listing.negotiable ? <span className="ml-2 text-xs font-bold text-slate-500">Negotiable</span> : null}
+            </p>
             <p className="text-[11px] font-bold uppercase tracking-normal text-slate-400">
               {priceLabel}
             </p>
@@ -801,6 +817,7 @@ export function AdminDashboardClient({
   initialDashboard: AdminDashboardData;
   initialSection: AdminSection;
 }) {
+  const router = useRouter();
   const [activeSection, setActiveSection] = useState<AdminSection>(initialSection);
   const [analytics, setAnalytics] = useState<AdminAnalyticsData | null>(null);
   const [analyticsError, setAnalyticsError] = useState("");
@@ -936,6 +953,19 @@ export function AdminDashboardClient({
     setIsSidebarOpen(false);
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/admin/auth/logout", { method: "POST" });
+      if (!response.ok) {
+        throw new Error("Unable to log out. Please try again.");
+      }
+
+      router.replace("/admin/login");
+    } catch (error) {
+      setActionMessage(error instanceof Error ? error.message : "Unable to log out");
+    }
+  };
+
   const headerTitle =
     activeSection === "overview"
       ? "Overview"
@@ -947,7 +977,7 @@ export function AdminDashboardClient({
     <div className="min-h-screen bg-[#eef2f7] text-slate-950">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 bg-[#101827] text-white lg:block">
         <AdminBrand />
-        <AdminSidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
+        <AdminSidebarNav activeSection={activeSection} onLogout={handleLogout} onNavigate={handleNavigate} />
       </aside>
 
       {isSidebarOpen ? (
@@ -970,7 +1000,7 @@ export function AdminDashboardClient({
                 <Icon name="close" />
               </button>
             </div>
-            <AdminSidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
+            <AdminSidebarNav activeSection={activeSection} onLogout={handleLogout} onNavigate={handleNavigate} />
           </aside>
         </div>
       ) : null}

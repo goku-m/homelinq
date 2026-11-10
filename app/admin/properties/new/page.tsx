@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { AddPropertyForm } from "./add-property-form";
+import { requireAdminPage } from "@/lib/admin-auth";
 
-export default function NewPropertyPage() {
+export const instant = false;
+
+export default async function NewPropertyPage() {
+  await requireAdminPage("/admin/properties/new");
+
   return (
     <main className="min-h-screen bg-[var(--theme-surface)] px-4 py-6 text-slate-950 sm:px-6">
       <div className="mx-auto max-w-5xl">

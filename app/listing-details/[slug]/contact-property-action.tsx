@@ -36,6 +36,36 @@ function EmailIcon() {
   );
 }
 
+function CustomerServiceIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-5 w-5 shrink-0"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 13v-1a8 8 0 0 1 16 0v1"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.9"
+      />
+      <path
+        d="M4 13h2.5v5H4a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2Zm16 0h-2.5v5H20a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2Z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="1.9"
+      />
+      <path
+        d="M17.5 18c-.6 1.2-1.8 2-3.5 2h-1"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.9"
+      />
+    </svg>
+  );
+}
+
 function CloseIcon() {
   return (
     <svg
@@ -110,28 +140,23 @@ export function ContactPropertyAction({
 
   const desktopClass =
     variant === "text"
-      ? "hidden shrink-0 text-sm font-black text-[var(--theme-primary)] underline-offset-4 transition hover:text-[var(--theme-deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/20 sm:inline"
-      : "hidden h-12 w-full items-center justify-center rounded-lg bg-[var(--theme-deep-teal)] px-7 text-center text-sm font-black text-white shadow-lg shadow-[var(--theme-primary)]/20 transition hover:bg-[var(--theme-primary-hover)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/25 sm:inline-flex";
+      ? "hidden shrink-0 items-center gap-2 text-sm font-black text-[var(--theme-primary)] underline-offset-4 transition hover:text-[var(--theme-deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/20 sm:inline-flex"
+      : "hidden h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--theme-deep-teal)] px-7 text-center text-sm font-black text-white shadow-lg shadow-[var(--theme-primary)]/20 transition hover:bg-[var(--theme-primary-hover)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/25 sm:inline-flex";
   const mobileClass =
     variant === "text"
-      ? "shrink-0 text-sm font-black text-[var(--theme-primary)] underline-offset-4 transition hover:text-[var(--theme-deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/20 sm:hidden"
-      : "inline-flex h-12 w-full items-center justify-center rounded-lg bg-[var(--theme-deep-teal)] px-7 text-center text-sm font-black text-white shadow-lg shadow-[var(--theme-primary)]/20 transition hover:bg-[var(--theme-primary-hover)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/25 sm:hidden";
+      ? "inline-flex shrink-0 items-center gap-2 text-sm font-black text-[var(--theme-primary)] underline-offset-4 transition hover:text-[var(--theme-deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/20 sm:hidden"
+      : "inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--theme-deep-teal)] px-7 text-center text-sm font-black text-white shadow-lg shadow-[var(--theme-primary)]/20 transition hover:bg-[var(--theme-primary-hover)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-primary)]/25 sm:hidden";
 
   return (
     <>
       <button className={desktopClass} onClick={() => setIsOpen(true)} type="button">
-        {variant === "text" ? (
-          <>
-            Contact
-            <span>&nbsp;About This Property</span>
-          </>
-        ) : (
-          "Contact About This Property"
-        )}
+        <CustomerServiceIcon />
+        Contact Us About This Property
       </button>
 
       <button className={mobileClass} onClick={() => setIsOpen(true)} type="button">
-        {variant === "text" ? "Contact" : "Contact About This Property"}
+        <CustomerServiceIcon />
+        Contact Us About This Property
       </button>
 
       {isOpen ? (

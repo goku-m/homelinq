@@ -53,6 +53,7 @@ type ListingFormState = {
   listingType: ListingType;
   location: string;
   price: string;
+  negotiable: boolean;
   priceRange: ListingPriceRange;
   panoramas: ListingPanorama[];
   registrationCurrency: "GHC" | "USD";
@@ -85,6 +86,7 @@ const emptyForm: ListingFormState = {
   listingType: "Rent",
   location: "",
   price: "",
+  negotiable: false,
   priceRange: "Per month",
   panoramas: [],
   registrationCurrency: "GHC",
@@ -239,6 +241,7 @@ function listingToForm(listing: Listing): ListingFormState {
     listingType: listing.listingType,
     location: listing.location,
     price: parsedPrice.price,
+    negotiable: Boolean(listing.negotiable),
     priceRange: listing.priceRange,
     panoramas: listing.panoramas,
     registrationCurrency: parsedRegistrationFee.registrationCurrency,
@@ -357,6 +360,7 @@ export function PropertyForm({
       listingType: form.listingType,
       location: form.location.trim(),
       price: formatPrice(form.currency, form.price),
+      negotiable: form.negotiable,
       priceRange: form.priceRange,
       priceType: form.listingType,
       panoramas: form.panoramas,
@@ -450,10 +454,11 @@ export function PropertyForm({
               ))}
             </select>
           </div>
-          <div>
+          <div className="md:col-span-2">
             <FieldLabel htmlFor="price">Price</FieldLabel>
-            <div className={`grid ${form.listingType === "Sale" ? "grid-cols-[104px_1fr]" : "grid-cols-[104px_1fr_128px]"}`}>
-              <select
+            <div className="grid items-center gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div className={`grid ${form.listingType === "Sale" ? "grid-cols-[104px_1fr]" : "grid-cols-[104px_1fr_128px]"}`}>
+                <select
                 aria-label="Price currency"
                 className="h-11 rounded-l-lg border border-r-0 border-[var(--theme-border)] bg-slate-50 px-3 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
                 onChange={(event) =>
@@ -466,32 +471,42 @@ export function PropertyForm({
               >
                 <option value="GHC">GHC</option>
                 <option value="USD">USD</option>
-              </select>
-              <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-black text-slate-700">
-                  {currencySymbols[form.currency]}
-                </span>
-                <input
-                  className="h-11 w-full rounded-r-lg border border-[var(--theme-border)] pl-14 pr-3 text-sm outline-none focus:border-[var(--theme-primary)]"
-                  id="price"
-                  onChange={(event) => updateForm("price", event.target.value)}
-                  placeholder="4,800"
-                  required
-                  value={form.price}
-                />
-              </div>
-              {form.listingType !== "Sale" ? (
-                <select
-                  aria-label="Price range"
-                  className="h-11 rounded-r-lg border border-l-0 border-[var(--theme-border)] bg-slate-50 px-2 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
-                  onChange={(event) => updateForm("priceRange", event.target.value as ListingPriceRange)}
-                  value={form.priceRange}
-                >
-                  <option value="Per Day">Per Day</option>
-                  <option value="Per week">Per week</option>
-                  <option value="Per month">Per month</option>
                 </select>
-              ) : null}
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-black text-slate-700">
+                    {currencySymbols[form.currency]}
+                  </span>
+                  <input
+                    className="h-11 w-full rounded-r-lg border border-[var(--theme-border)] pl-14 pr-3 text-sm outline-none focus:border-[var(--theme-primary)]"
+                    id="price"
+                    onChange={(event) => updateForm("price", event.target.value)}
+                    placeholder="4,800"
+                    required
+                    value={form.price}
+                  />
+                </div>
+                {form.listingType !== "Sale" ? (
+                  <select
+                    aria-label="Price range"
+                    className="h-11 rounded-r-lg border border-l-0 border-[var(--theme-border)] bg-slate-50 px-2 text-sm font-black text-slate-700 outline-none focus:border-[var(--theme-primary)]"
+                    onChange={(event) => updateForm("priceRange", event.target.value as ListingPriceRange)}
+                    value={form.priceRange}
+                  >
+                    <option value="Per Day">Per Day</option>
+                    <option value="Per week">Per week</option>
+                    <option value="Per month">Per month</option>
+                  </select>
+                ) : null}
+              </div>
+              <label className="flex min-h-11 cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg border border-[var(--theme-border)] px-3 text-sm font-bold text-slate-700">
+                <input
+                  checked={Boolean(form.negotiable)}
+                  className="h-4 w-4 accent-[var(--theme-primary)]"
+                  onChange={(event) => updateForm("negotiable", event.target.checked)}
+                  type="checkbox"
+                />
+                Negotiable
+              </label>
             </div>
           </div>
           <div>

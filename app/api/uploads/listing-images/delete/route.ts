@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 import { NextResponse } from "next/server";
+import { isAdminRequest } from "@/lib/admin-auth";
 
 function createSignature(params: Record<string, string>, apiSecret: string) {
   const serializedParams = Object.entries(params)
@@ -45,6 +46,10 @@ function getPublicIdFromUrl(imageUrl: string) {
 }
 
 export async function DELETE(request: Request) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const { url } = (await request.json()) as { url?: string };
     const publicId = url ? getPublicIdFromUrl(url) : undefined;
