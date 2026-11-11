@@ -32,6 +32,7 @@ type AdminListingRow = {
 
 export type AdminMetric = {
   label: string;
+  secondaryValue?: string;
   value: string;
   tone: "blue" | "green" | "amber" | "red";
 };
@@ -124,25 +125,39 @@ function listingFromRow(row: Required<AdminListingRow>): Listing {
   };
 }
 
+// Bank of Ghana USD/GHS mid rate dated 2026-11-09; deployments can override it.
+const USD_TO_GHS_RATE = Number(process.env.ADMIN_USD_GHS_RATE) || 11.69;
+
 function parsePrice(price: string) {
+  const currency = /^\s*(?:USD\b|\$)/i.test(price) ? "USD" : "GHS";
   const numericPrice = Number(price.replace(/[^\d.]/g, ""));
 
-  return Number.isFinite(numericPrice) ? numericPrice : 0;
+  return { amount: Number.isFinite(numericPrice) ? numericPrice : 0, currency };
 }
 
 function annualizedValue(listing: Pick<AdminListingRow, "listing_type" | "price" | "price_type">) {
-  const price = parsePrice(listing.price);
+  const parsed = parsePrice(listing.price);
+  const priceInGhs = parsed.currency === "USD" ? parsed.amount * USD_TO_GHS_RATE : parsed.amount;
 
   if (listing.listing_type === "Sale" && listing.price_type === "Sale") {
-    return price;
+    return priceInGhs;
   }
 
-  return price * 12;
+  return priceInGhs * 12;
 }
 
 function compactCurrency(value: number) {
   return new Intl.NumberFormat("en-GH", {
     currency: "GHS",
+    maximumFractionDigits: value >= 1_000_000 ? 1 : 0,
+    notation: value >= 1_000_000 ? "compact" : "standard",
+    style: "currency",
+  }).format(value);
+}
+
+function compactUsd(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    currency: "USD",
     maximumFractionDigits: value >= 1_000_000 ? 1 : 0,
     notation: value >= 1_000_000 ? "compact" : "standard",
     style: "currency",
@@ -210,6 +225,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     (total, listing) => total + annualizedValue(listing),
     0,
   );
+  const portfolioValueUsd = portfolioValue / USD_TO_GHS_RATE;
 
   const locationTotals = new Map<string, { count: number; value: number }>();
   const typeTotals = new Map<ListingType, number>();
@@ -248,6 +264,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
         label: "Portfolio Value",
         tone: "green",
         value: compactCurrency(portfolioValue),
+        secondaryValue: `≈ ${compactUsd(portfolioValueUsd)} USD equivalent`,
       },
       {
         label: "Available Now",

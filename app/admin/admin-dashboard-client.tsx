@@ -175,6 +175,11 @@ function MetricCard({ metric }: { metric: AdminMetric }) {
         <p className="mt-1 break-words text-xl font-black tracking-normal text-slate-950 sm:text-2xl">
           {metric.value}
         </p>
+        {metric.secondaryValue ? (
+          <p className="mt-1 text-xs font-semibold text-slate-500">
+            {metric.secondaryValue}
+          </p>
+        ) : null}
       </div>
       <span className={`grid h-12 w-12 place-items-center rounded-lg ${toneClass}`}>
         <Icon name={iconByTone[metric.tone]} />
