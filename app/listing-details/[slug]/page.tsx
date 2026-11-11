@@ -49,15 +49,27 @@ export async function generateMetadata({
   }
 
   const description = `${listing.title} in ${listing.location}. ${formatPriceDisplay(listing.price)}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com";
+  const canonicalUrl = new URL(`/listing-details/${listing.slug}`, siteUrl).toString();
+  const imageUrl = new URL(listing.image, siteUrl).toString();
+  const image = { url: imageUrl, alt: `${listing.title} property image` };
+
   return {
     title: `${listing.title} in ${listing.location}`,
     description,
-    alternates: { canonical: `/listing-details/${listing.slug}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       type: "website",
+      url: canonicalUrl,
       title: `${listing.title} in ${listing.location}`,
       description,
-      images: [{ url: listing.image, alt: `${listing.title} property image` }],
+      images: [image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${listing.title} in ${listing.location}`,
+      description,
+      images: [image],
     },
   };
 }
