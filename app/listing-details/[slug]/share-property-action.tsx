@@ -27,7 +27,9 @@ export function SharePropertyAction({ title }: { title: string }) {
 
     if (isMobile && typeof navigator.share === "function") {
       try {
-        await navigator.share({ title, url });
+        // iOS share extensions handle a text + URL payload more reliably than
+        // a URL-only payload when the receiving app builds a link preview.
+        await navigator.share({ title, text: title, url });
       } catch {
         // The native share sheet can be dismissed without completing a share.
       }
