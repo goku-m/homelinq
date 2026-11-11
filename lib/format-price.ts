@@ -24,7 +24,7 @@ export function formatRegistrationFeeDisplay(value: string) {
     return "GH\u20b5 " + amount;
   }
 
-  if (/USD|\$/.i.test(trimmedValue)) {
+  if (/USD|\$/i.test(trimmedValue)) {
     return "$ " + amount;
   }
 
