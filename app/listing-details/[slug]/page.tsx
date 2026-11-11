@@ -5,6 +5,7 @@ import { formatPriceDisplay } from "@/lib/format-price";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ContactPropertyAction } from "./contact-property-action";
+import { SharePropertyAction } from "./share-property-action";
 import { ListingGallery } from "./listing-gallery";
 import { ListingViewTracker } from "./listing-view-tracker";
 
@@ -138,7 +139,7 @@ async function ListingDetailsContent({
           </p>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <ContactPropertyAction
             email={contactEmail}
             listingSlug={listing.slug}
@@ -147,6 +148,7 @@ async function ListingDetailsContent({
             subject={contactSubject}
             variant="button"
           />
+          <SharePropertyAction title={listing.title} />
         </div>
 
         <div className="mt-8">
@@ -213,7 +215,7 @@ async function ListingDetailsContent({
           />
         </dl>
 
-        <div className="mt-6 flex justify-center sm:justify-end">
+        <div className="mt-6 grid gap-3 sm:ml-auto sm:w-[41rem] sm:grid-cols-2">
           <ContactPropertyAction
             email={contactEmail}
             listingSlug={listing.slug}
@@ -222,6 +224,7 @@ async function ListingDetailsContent({
             subject={contactSubject}
             variant="button"
           />
+          <SharePropertyAction title={listing.title} />
         </div>
       </section>
     </main>
