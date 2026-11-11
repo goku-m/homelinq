@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     "HomeLinq Properties",
   ],
   alternates: { canonical: "/" },
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_GH",

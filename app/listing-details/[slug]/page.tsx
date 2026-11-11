@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import type { Metadata } from "next";
 import { getListingBySlugFromDb, listListings } from "@/lib/listing-repository";
-import { formatPriceDisplay } from "@/lib/format-price";
+import { formatPriceDisplay, formatRegistrationFeeDisplay } from "@/lib/format-price";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ContactPropertyAction } from "./contact-property-action";
@@ -193,7 +193,7 @@ async function ListingDetailsContent({
             }
           />
           <DetailRow label="Commission" value={listing.commission} />
-          <DetailRow label="Registration fee" value={formatPriceDisplay(listing.registrationFee)} />
+          <DetailRow label="Registration fee" value={formatRegistrationFeeDisplay(listing.registrationFee)} />
           <DetailRow label="Bedrooms" value={listing.bedrooms} />
           <DetailRow label="Bathrooms" value={listing.showers} />
           <DetailRow label="Garage" value={listing.garage} />

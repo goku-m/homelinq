@@ -121,41 +121,27 @@ function numberFromString(value: string) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+const ghanaCediPattern = /(?:GHC|GHS|GH\u20b5|\u20b5|GH\u00e2\u201a\u00b5|\u00e2\u201a\u00b5|GH\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5)/i;
+const currencyTokenPattern = /(?:GHC|GHS|USD|GH\u20b5|\u20b5|GH\u00e2\u201a\u00b5|\u00e2\u201a\u00b5|GH\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\$)/gi;
+
+function stripCurrencyTokens(value: string) {
+  return value.replace(currencyTokenPattern, "").trim();
+}
+
 function parsePrice(value: string): Pick<ListingFormState, "currency" | "price"> {
   const trimmedValue = value.trim();
 
-  if (/^(GHC|GHS)\s+/i.test(trimmedValue)) {
+  if (ghanaCediPattern.test(trimmedValue)) {
     return {
       currency: "GHC",
-      price: trimmedValue.replace(/^(GHC|GHS)\s+/i, ""),
+      price: stripCurrencyTokens(trimmedValue),
     };
   }
 
-  if (/^GH₵\s*/i.test(trimmedValue)) {
-    return {
-      currency: "GHC",
-      price: trimmedValue.replace(/^GH₵\s*/i, ""),
-    };
-  }
-
-  if (trimmedValue.startsWith("₵")) {
-    return {
-      currency: "GHC",
-      price: trimmedValue.replace(/^₵\s*/, ""),
-    };
-  }
-
-  if (trimmedValue.toUpperCase().startsWith("USD ")) {
+  if (/^(?:USD\s+|\$)/i.test(trimmedValue)) {
     return {
       currency: "USD",
-      price: trimmedValue.replace(/^USD\s+/i, ""),
-    };
-  }
-
-  if (trimmedValue.startsWith("$")) {
-    return {
-      currency: "USD",
-      price: trimmedValue.replace(/^\$\s*/, ""),
+      price: stripCurrencyTokens(trimmedValue),
     };
   }
 
@@ -168,16 +154,16 @@ function parsePrice(value: string): Pick<ListingFormState, "currency" | "price">
 function parseRegistrationFee(value: string): Pick<ListingFormState, "registrationCurrency" | "registrationFee"> {
   const trimmedValue = value.trim();
 
-  if (/^(GHC|GHS)\s+/i.test(trimmedValue) || /^GHâ‚µ\s*/i.test(trimmedValue) || trimmedValue.startsWith("â‚µ")) {
+  if (ghanaCediPattern.test(trimmedValue)) {
     return {
       registrationCurrency: "GHC",
-      registrationFee: trimmedValue.replace(/^(GHC|GHS)\s+/i, "").replace(/^GHâ‚µ\s*/i, "").replace(/^â‚µ\s*/, ""),
+      registrationFee: stripCurrencyTokens(trimmedValue),
     };
   }
 
   return {
     registrationCurrency: "USD",
-    registrationFee: trimmedValue.replace(/^USD\s+/i, "").replace(/^\$\s*/, ""),
+    registrationFee: stripCurrencyTokens(trimmedValue),
   };
 }
 
@@ -196,7 +182,7 @@ function normalizeCommission(value: string) {
 }
 
 const currencySymbols: Record<ListingFormState["currency"], string> = {
-  GHC: "GH₵",
+  GHC: "GH\u20b5",
   USD: "$",
 };
 
