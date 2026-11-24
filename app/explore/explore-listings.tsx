@@ -6,7 +6,7 @@ import { Listing } from "@/types/listing";
 
 const PAGE_SIZE = 6;
 
-export function ExploreListings({ listings }: { listings: Listing[] }) {
+export function ExploreListings({ listings, usdToGhsRate }: { listings: Listing[]; usdToGhsRate: number }) {
   const [currentPage, setCurrentPage] = useState(1);
   const listingsTopRef = useRef<HTMLDivElement | null>(null);
   const totalPages = Math.max(1, Math.ceil(listings.length / PAGE_SIZE));
@@ -38,7 +38,7 @@ export function ExploreListings({ listings }: { listings: Listing[] }) {
       <div className="scroll-mt-24" ref={listingsTopRef} />
       <div className="mt-8 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
         {visibleListings.map((listing) => (
-          <ListingCard key={`${listing.slug}-${listing.title}`} listing={listing} />
+          <ListingCard key={`${listing.slug}-${listing.title}`} listing={listing} usdToGhsRate={usdToGhsRate} />
         ))}
       </div>
 

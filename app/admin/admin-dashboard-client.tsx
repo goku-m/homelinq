@@ -36,6 +36,7 @@ const adminNavItems = [
   ["overview", "Overview"],
   ["properties", "Properties"],
   ["analytics", "Analytics"],
+  ["settings", "Settings"],
 ] as const;
 
 type AdminIconName =
@@ -66,6 +67,93 @@ type AdminIconName =
 export type AdminSection = (typeof adminNavItems)[number][0];
 
 type PropertyViewMode = "grid" | "list";
+
+async function readSettingsResponse(response: Response) {
+  const body = await response.text();
+  if (!body.trim()) {
+    throw new Error(`Server returned an empty response (HTTP ${response.status}). Check the database connection and migration 012.`);
+  }
+
+  try {
+    return JSON.parse(body) as { rate?: number; error?: string };
+  } catch {
+    throw new Error(`Server returned an invalid response (HTTP ${response.status}). Check the database connection and migration 012.`);
+  }
+}
+
+function SettingsContent() {
+  const [rate, setRate] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    let isCurrent = true;
+    fetch("/api/admin/settings/exchange-rate")
+      .then(async (response) => {
+        const payload = await readSettingsResponse(response);
+        if (!response.ok) throw new Error(payload.error ?? "Unable to load the exchange rate.");
+        if (isCurrent) setRate(String(payload.rate ?? ""));
+      })
+      .catch((loadError) => {
+        if (isCurrent) setError(loadError instanceof Error ? loadError.message : "Unable to load the exchange rate.");
+      })
+      .finally(() => { if (isCurrent) setIsLoading(false); });
+    return () => { isCurrent = false; };
+  }, []);
+
+  const saveRate = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError("");
+    setMessage("");
+    setIsSaving(true);
+    try {
+      const response = await fetch("/api/admin/settings/exchange-rate", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rate: Number(rate) }),
+      });
+      const payload = await readSettingsResponse(response);
+      if (!response.ok) throw new Error(payload.error ?? "Unable to save the exchange rate.");
+      setRate(String(payload.rate));
+      setMessage("Exchange rate updated.");
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : "Unable to save the exchange rate.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <section className="max-w-2xl rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <h2 className="text-lg font-black text-slate-950">Currency conversion</h2>
+      <p className="mt-2 text-sm leading-6 text-slate-600">Set how many Ghana cedis equal one US dollar. Dollar listing prices will display in cedis using this rate.</p>
+      <form className="mt-6 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end" onSubmit={saveRate}>
+        <label className="grid gap-2 text-sm font-bold text-slate-700" htmlFor="usd-to-ghs-rate">
+          USD to GHS rate
+          <input
+            className="h-12 rounded-lg border border-slate-300 px-4 text-base font-semibold text-slate-950 outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[var(--theme-primary)]/15"
+            disabled={isLoading || isSaving}
+            id="usd-to-ghs-rate"
+            min="0.000001"
+            onChange={(event) => setRate(event.target.value)}
+            placeholder="For example, 12.50"
+            required
+            step="any"
+            type="number"
+            value={rate}
+          />
+        </label>
+        <button className="h-12 rounded-lg bg-[var(--theme-primary)] px-6 text-sm font-black text-white transition hover:bg-[var(--theme-primary-hover)] disabled:opacity-60" disabled={isLoading || isSaving} type="submit">
+          {isSaving ? "Saving…" : "Save rate"}
+        </button>
+      </form>
+      {message ? <p className="mt-4 text-sm font-bold text-emerald-700" role="status">{message}</p> : null}
+      {error ? <p className="mt-4 text-sm font-bold text-rose-700" role="alert">{error}</p> : null}
+    </section>
+  );
+}
 
 function Icon({ name }: { name: AdminIconName }) {
   const common = {
@@ -976,7 +1064,9 @@ export function AdminDashboardClient({
       ? "Overview"
       : activeSection === "properties"
         ? "Properties"
-        : "Analytics";
+        : activeSection === "analytics"
+          ? "Analytics"
+          : "Settings";
 
   return (
     <div className="min-h-screen bg-[#eef2f7] text-slate-950">
@@ -1052,6 +1142,8 @@ export function AdminDashboardClient({
               error={analyticsError}
               isLoading={isLoadingAnalytics}
             />
+          ) : activeSection === "settings" ? (
+            <SettingsContent />
           ) : (
             <DashboardContent dashboard={dashboard} />
           )}

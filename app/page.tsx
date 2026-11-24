@@ -1,9 +1,11 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { ListingCard } from "@/components/listing-card";
 import { QuickSearchModal } from "@/components/quick-search-modal";
 import { SiteHeader } from "@/components/site-header";
 import { listFeaturedListings, listListings } from "@/lib/listing-repository";
+import { getUsdToGhsRate } from "@/lib/exchange-rate";
 
 const heroSlides: HeroSlide[] = [
   {
@@ -44,6 +46,18 @@ function ChevronIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
         strokeWidth="2.4"
       />
     </svg>
+  );
+}
+
+async function FeaturedListingCards({ listings }: { listings: Awaited<ReturnType<typeof listFeaturedListings>> }) {
+  const usdToGhsRate = await getUsdToGhsRate();
+
+  return (
+    <div className="mt-8 grid gap-7 md:grid-cols-3">
+      {listings.map((listing) => (
+        <ListingCard key={listing.title} listing={listing} usdToGhsRate={usdToGhsRate} />
+      ))}
+    </div>
   );
 }
 
@@ -130,11 +144,9 @@ export default async function Home() {
         <h2 className="max-w-2xl text-3xl font-black tracking-normal text-slate-950 md:text-4xl">
           Find the perfect property with ease
         </h2>
-        <div className="mt-8 grid gap-7 md:grid-cols-3">
-          {featuredListings.map((listing) => (
-            <ListingCard key={listing.title} listing={listing} />
-          ))}
-        </div>
+        <Suspense fallback={<div aria-hidden="true" className="mt-8 h-96 rounded-2xl bg-white" />}>
+          <FeaturedListingCards listings={featuredListings} />
+        </Suspense>
         <div className="mt-10 flex justify-center">
           <a
             className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[var(--theme-primary)] px-7 text-sm font-bold text-white shadow-lg shadow-[var(--theme-primary)]/20 transition hover:bg-[var(--theme-primary-hover)]"

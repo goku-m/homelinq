@@ -32,7 +32,7 @@ async function LiveDashboard({
   await requireAdminPage();
   const sectionValue = Array.isArray(params.section) ? params.section[0] : params.section;
   const initialSection: AdminSection =
-    sectionValue === "properties" || sectionValue === "analytics"
+    sectionValue === "properties" || sectionValue === "analytics" || sectionValue === "settings"
       ? sectionValue
       : "overview";
   const dashboard = await getAdminDashboardData();

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getListingCardImageUrl } from "@/lib/listing-image-url";
-import { formatPriceDisplay } from "@/lib/format-price";
+import { formatListingPrice } from "@/lib/format-price";
 import { Listing } from "@/types/listing";
 
 function BedIcon() {
@@ -97,7 +97,7 @@ function uniqueImageCount(listing: Listing) {
   return new Set([listing.image, ...listing.gallery]).size;
 }
 
-export function ListingCard({ listing }: { listing: Listing }) {
+export function ListingCard({ listing, usdToGhsRate }: { listing: Listing; usdToGhsRate: number }) {
 
   const priceLabel =
     listing.priceType === "Rent"
@@ -141,7 +141,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
             </h3>
             <div className="mt-2">
               <p className="flex flex-wrap items-center gap-2 text-base font-black text-[var(--theme-muted-teal)]">
-                {formatPriceDisplay(listing.price)}
+                {formatListingPrice(listing.price, usdToGhsRate)}
                 {listing.negotiable ? <span className="text-xs font-bold text-slate-500">Negotiable</span> : null}
               </p>
               <p className="text-[11px] font-bold uppercase tracking-normal text-slate-400">

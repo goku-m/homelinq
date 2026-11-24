@@ -9,6 +9,22 @@ export function formatPriceDisplay(value: string) {
   });
 }
 
+/** Convert USD amounts to GHS for customer facing listing prices. */
+export function formatListingPrice(value: string, usdToGhsRate: number) {
+  if (!/(?:\bUSD\b|\$)/i.test(value)) {
+    return formatPriceDisplay(value);
+  }
+
+  const converted = value.replace(/\d[\d,]*(?:\.\d+)?/g, (amount) => {
+    const numericAmount = Number(amount.replace(/,/g, ""));
+    return Number.isFinite(numericAmount)
+      ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(numericAmount * usdToGhsRate)
+      : amount;
+  });
+
+  return converted.replace(/\bUSD\b|\$/gi, "GH₵").replace(/GH₵\s*/g, "GH₵ ").trim();
+}
+
 const ghanaCediPattern = /(?:GHC|GHS|GH\u20b5|\u20b5|GH\u00e2\u201a\u00b5|\u00e2\u201a\u00b5|GH\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5)/i;
 const registrationCurrencyPattern = /(?:GHC|GHS|USD|GH\u20b5|\u20b5|GH\u00e2\u201a\u00b5|\u00e2\u201a\u00b5|GH\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00b5|\$)/gi;
 

@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { searchListings } from "@/lib/listing-repository";
 import type { ListingCategory, ListingType } from "@/types/listing";
 import type { Metadata } from "next";
+import { getUsdToGhsRate } from "@/lib/exchange-rate";
 
 export const metadata: Metadata = {
   title: "Explore Properties for Sale, Rent, and Lease in Ghana",
@@ -74,6 +75,7 @@ async function ExploreResults({ searchParams }: { searchParams: ExploreSearchPar
         : category === "Rent"
           ? "Properties for Rent"
           : "All available properties";
+  const usdToGhsRate = await getUsdToGhsRate();
 
   return (
     <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 md:py-14">
@@ -96,7 +98,7 @@ async function ExploreResults({ searchParams }: { searchParams: ExploreSearchPar
         </div>
       </div>
 
-      <ExploreListings listings={listings} />
+      <ExploreListings listings={listings} usdToGhsRate={usdToGhsRate} />
     </section>
   );
 }

@@ -1,7 +1,8 @@
 import { SiteHeader } from "@/components/site-header";
 import type { Metadata } from "next";
 import { getListingBySlugFromDb, listListings } from "@/lib/listing-repository";
-import { formatPriceDisplay, formatRegistrationFeeDisplay } from "@/lib/format-price";
+import { formatListingPrice, formatRegistrationFeeDisplay } from "@/lib/format-price";
+import { getUsdToGhsRate } from "@/lib/exchange-rate";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ContactPropertyAction } from "./contact-property-action";
@@ -48,7 +49,7 @@ export async function generateMetadata({
     return { title: "Property not found" };
   }
 
-  const description = `${listing.title} in ${listing.location}. ${formatPriceDisplay(listing.price)}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
+  const description = `${listing.title} in ${listing.location}. ${listing.price}. Explore property details, amenities, availability, and contact options on HomeLinq Properties.`;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://homelinqproperties.com";
   const canonicalUrl = new URL(`/listing-details/${listing.slug}`, siteUrl).toString();
   const imageUrl = new URL(listing.image, siteUrl).toString();
@@ -99,6 +100,8 @@ async function ListingDetailsContent({
     notFound();
   }
 
+  const usdToGhsRate = await getUsdToGhsRate();
+
   const priceSuffix = listing.listingType === "Rent" || listing.listingType === "Lease"
     ? ` / ${listing.priceRange.replace("Per ", "").toLowerCase()}`
     : "";
@@ -145,7 +148,7 @@ async function ListingDetailsContent({
             {listing.title} at {listing.location}
           </h1>
           <p className="w-full shrink-0 rounded-lg bg-[var(--theme-spring)] px-4 py-2 text-2xl font-black text-[#622347] md:w-auto">
-            {formatPriceDisplay(listing.price)}
+            {formatListingPrice(listing.price, usdToGhsRate)}
             {listing.negotiable ? <span className="ml-2 text-sm font-semibold">Negotiable</span> : null}
             <span className="text-sm font-medium">{priceSuffix}</span>
           </p>
@@ -187,7 +190,7 @@ async function ListingDetailsContent({
             value={
               listing.listingType === "Sale" ? (
                 <span className="rounded-md bg-[var(--theme-surface)] px-3 py-2 font-black text-[var(--theme-primary)]">
-                  {formatPriceDisplay(listing.price)}
+                  {formatListingPrice(listing.price, usdToGhsRate)}
                   {listing.negotiable ? <span className="ml-2 text-xs font-semibold">Negotiable</span> : null}
                 </span>
               ) : (
@@ -197,7 +200,7 @@ async function ListingDetailsContent({
                       className="rounded-md bg-[var(--theme-surface)] px-3 py-2 text-[var(--theme-ink)]"
                       key={`${option}-${index}`}
                     >
-                      {formatPriceDisplay(option)}
+                      {formatListingPrice(option, usdToGhsRate)}
                     </span>
                   ))}
                 </div>
